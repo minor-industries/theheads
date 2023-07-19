@@ -23,6 +23,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY common common
+COPY gen gen
 
 COPY leds leds
 COPY cmd/leds ./cmd/leds
