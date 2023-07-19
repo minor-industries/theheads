@@ -1,4 +1,4 @@
-package mjpeg
+package lib
 
 import (
 	"bufio"

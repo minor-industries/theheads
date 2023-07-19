@@ -31,6 +31,10 @@ import (
 var fe embed.FS
 
 func Run(env *cfg.Cfg, discovery discovery.Discovery) {
+	if env.CheckInTime == 0 {
+		panic("boss check-in time can't be zero")
+	}
+
 	boss := &app.Boss{
 		Env: env,
 	}

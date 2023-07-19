@@ -5,7 +5,7 @@ import (
 	"github.com/cacktopus/theheads/camera/cfg"
 	"github.com/cacktopus/theheads/camera/recorder"
 	"github.com/cacktopus/theheads/camera/recorder/simple_recorder"
-	"github.com/cacktopus/theheads/camera/source/mjpeg"
+	"github.com/cacktopus/theheads/camera/source/mjpeg/lib"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"gocv.io/x/gocv"
@@ -14,7 +14,7 @@ import (
 )
 
 type MjpegWebcam struct {
-	frames chan *mjpeg.Frame
+	frames chan *lib.Frame
 	*simple_recorder.Recorder
 }
 
@@ -44,10 +44,10 @@ func NewMjpegWebcam(logger *zap.Logger, env *cfg.Cfg) (*MjpegWebcam, error) {
 		return nil, errors.Wrap(err, "stdout pipe")
 	}
 
-	frames := make(chan *mjpeg.Frame)
+	frames := make(chan *lib.Frame)
 	recorder := simple_recorder.New(env.RecorderBufsize)
 
-	go mjpeg.DecodeMjpeg(env, stdout, func(frame *mjpeg.Frame) {
+	go lib.DecodeMjpeg(env, stdout, func(frame *lib.Frame) {
 		recorder.AddFrame(frame)
 		frames <- frame
 	})

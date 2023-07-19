@@ -15,6 +15,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"time"
 )
 
 func headEnv(name string) *cfg.Cfg {
@@ -39,13 +40,17 @@ func bossEnv() *cfg2.Cfg {
 	scenePath := os.ExpandEnv("dev/scenes/two-heads")
 
 	boss01 := &cfg2.Cfg{
-		ScenePath: scenePath,
-		SceneName: "local-dev",
-		TextSet:   "local-dev",
-		BossFE:    os.Getenv("BOSS_FE"),
-
+		ScenePath:            scenePath,
+		SceneName:            "local-dev",
+		TextSet:              "local-dev",
+		SpawnPeriod:          250 * time.Millisecond,
+		BossFE:               os.Getenv("BOSS_FE"),
 		FloodlightController: "day-night",
 		DayDetector:          []string{"time-based", "7h30m", "20h15m"},
+		Debug:                true,
+		CheckInTime:          500 * time.Millisecond,
+		FearfulCount:         3,
+		VoiceVolume:          -100,
 	}
 	return boss01
 }

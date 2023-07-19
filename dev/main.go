@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ory/dockertest/v3"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"sync"
@@ -22,7 +21,7 @@ import (
 const dockerCamera = false
 
 func main() {
-	logger, _ := zap.NewProduction()
+	logger, _ := util.NewLogger(true)
 	gin.SetMode(gin.ReleaseMode)
 
 	var wg sync.WaitGroup
@@ -79,13 +78,15 @@ func main() {
 
 	go boss.Run(boss01, services)
 
-	services.Register("web", "web01", 80)
-	go func() {
-		err := web.Run(services)
-		if err != nil {
-			panic(err)
-		}
-	}()
+	if false {
+		services.Register("web", "web01", 80)
+		go func() {
+			err := web.Run(services)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
 
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc,

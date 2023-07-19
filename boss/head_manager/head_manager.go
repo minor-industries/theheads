@@ -244,7 +244,9 @@ func (h *HeadManager) cleanupLateConnections(found chan *Connection) {
 			close(found)
 			return
 		case c := <-found:
-			c.Conn.Close()
+			if c.Conn != nil {
+				c.Conn.Close()
+			}
 		}
 	}
 }
