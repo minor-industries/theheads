@@ -2,6 +2,7 @@ package head_manager
 
 import (
 	"context"
+	"github.com/cacktopus/theheads/boss/cfg"
 	"github.com/cacktopus/theheads/boss/scene"
 	"github.com/cacktopus/theheads/boss/services"
 	"github.com/cacktopus/theheads/common/discovery"
@@ -27,6 +28,7 @@ type Stand struct {
 }
 
 type HeadManager struct {
+	env              *cfg.Cfg
 	lock             sync.Mutex
 	clients          map[string]*Connection
 	directory        *services.Directory
@@ -34,8 +36,13 @@ type HeadManager struct {
 	cConnectionError prometheus.Counter
 }
 
-func NewHeadManager(logger *zap.Logger, directory *services.Directory) *HeadManager {
+func NewHeadManager(
+	logger *zap.Logger,
+	env *cfg.Cfg,
+	directory *services.Directory,
+) *HeadManager {
 	h := &HeadManager{
+		env:       env,
 		clients:   map[string]*Connection{},
 		directory: directory,
 		gCheckinDuration: metrics.SimpleGauge(

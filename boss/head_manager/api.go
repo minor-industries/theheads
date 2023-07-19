@@ -82,7 +82,7 @@ func (h *HeadManager) SetVolume(
 		logger.Error("error fetching head connection", zap.Error(err))
 	} else {
 		client := heads.NewVoicesClient(conn.Conn)
-		_, err = client.SetVolume(ctx, &heads.SetVolumeIn{VolDb: -1})
+		_, err = client.SetVolume(ctx, &heads.SetVolumeIn{VolDb: int32(h.env.VoiceVolume)})
 		if err != nil {
 			logger.Error("error setting volume", zap.Error(err))
 		}

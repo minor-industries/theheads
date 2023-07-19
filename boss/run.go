@@ -3,6 +3,7 @@ package boss
 import (
 	"embed"
 	"github.com/cacktopus/theheads/boss/app"
+	"github.com/cacktopus/theheads/boss/cfg"
 	"github.com/cacktopus/theheads/boss/day"
 	"github.com/cacktopus/theheads/boss/day/camera_feed"
 	"github.com/cacktopus/theheads/boss/day/time_based"
@@ -29,7 +30,7 @@ import (
 //go:embed frontend/fe
 var fe embed.FS
 
-func Run(env *app.Cfg, discovery discovery.Discovery) {
+func Run(env *cfg.Cfg, discovery discovery.Discovery) {
 	boss := &app.Boss{
 		Env: env,
 	}
@@ -127,7 +128,7 @@ func Run(env *app.Cfg, discovery discovery.Discovery) {
 		"freakout":         {freakout.Freakout, 60},
 	}
 
-	boss.HeadManager = head_manager.NewHeadManager(boss.Logger, boss.Directory)
+	boss.HeadManager = head_manager.NewHeadManager(boss.Logger, boss.Env, boss.Directory)
 
 	dj.NewDJ(boss, allScenes).RunScenes()
 }

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/cacktopus/theheads/boss/cfg"
 	"github.com/cacktopus/theheads/boss/day"
 	"github.com/cacktopus/theheads/boss/grid"
 	"github.com/cacktopus/theheads/boss/head_manager"
@@ -15,7 +16,7 @@ import (
 
 type Boss struct {
 	Logger      *zap.Logger
-	Env         *Cfg
+	Env         *cfg.Cfg
 	Broker      *broker.Broker
 	Grid        *grid.Grid
 	Directory   *services.Directory

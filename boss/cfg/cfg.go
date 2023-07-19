@@ -1,4 +1,4 @@
-package app
+package cfg
 
 import "time"
 
@@ -17,4 +17,6 @@ type Cfg struct {
 
 	CheckInTime  time.Duration `envconfig:"default=500ms"`
 	FearfulCount int           `envconfig:"default=3"`
+
+	VoiceVolume int `envconfig:"default=-1"`
 }

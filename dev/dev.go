@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"github.com/cacktopus/theheads/boss/app"
+	cfg2 "github.com/cacktopus/theheads/boss/cfg"
 	util2 "github.com/cacktopus/theheads/boss/util"
 	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/head/cfg"
@@ -35,10 +35,10 @@ func headEnv(name string) *cfg.Cfg {
 	return env
 }
 
-func bossEnv() *app.Cfg {
+func bossEnv() *cfg2.Cfg {
 	scenePath := os.ExpandEnv("dev/scenes/two-heads")
 
-	boss01 := &app.Cfg{
+	boss01 := &cfg2.Cfg{
 		ScenePath: scenePath,
 		SceneName: "local-dev",
 		TextSet:   "local-dev",
