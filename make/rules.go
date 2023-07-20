@@ -178,12 +178,12 @@ var rules = map[string]func(rule string){
 	},
 
 	"reflex-gear-fe": func(rule string) {
-		// reflex -v -g '**/*.go' -- go build -o frontend/fe/Run.wasm ./frontend
+		// reflex -v -g '**/*.go' -- go build -o frontend/fe/main.wasm ./frontend
 		grm.Cd("gears", func() {
 			grm.Run([]string{
 				"GOOS=js",
 				"GOARCH=wasm",
-			}, "reflex", "-v", "-g", "**/*.go", "--", "go", "build", "-o", "frontend/fe/Run.wasm", "./frontend")
+			}, "reflex", "-v", "-g", "**/*.go", "--", "go", "build", "-o", "frontend/fe/main.wasm", "./frontend")
 		})
 	},
 }
@@ -261,7 +261,7 @@ func copyLeds(rule string) {
 func bossFrontend(rule string) {
 	grm.Run([]string{"GOOS=js", "GOARCH=wasm"},
 		"go", "build",
-		"-o", "./boss/frontend/fe/Run.wasm",
+		"-o", "./boss/frontend/fe/main.wasm",
 		"./boss/frontend",
 	)
 }
