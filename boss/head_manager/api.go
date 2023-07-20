@@ -52,10 +52,12 @@ func (h *HeadManager) SetActor(
 
 func (h *HeadManager) Say(
 	ctx context.Context,
-	logger *zap.Logger,
+	parentLogger *zap.Logger,
 	headURI string,
 	sound string,
 ) {
+	logger := parentLogger.With(zap.String("uri", headURI))
+
 	conn, err := h.GetConn(headURI)
 	if err != nil {
 		logger.Error("error fetching head connection", zap.Error(err))
