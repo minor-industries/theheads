@@ -1,14 +1,14 @@
 package solar
 
 import (
+	"encoding/binary"
 	"github.com/cacktopus/theheads/common/standard_server"
+	"github.com/goburrow/modbus"
 	"github.com/jessevdk/go-flags"
+	"github.com/minor-industries/platform/common/metrics"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/spagettikod/gotracer"
 	"go.uber.org/zap"
-	"math"
-	"sync"
 	"time"
 )
 
@@ -37,12 +37,22 @@ func Run() error {
 		return errors.Wrap(err, "parse")
 	}
 
-	_, err = gotracer.Status(opt.SerialPort)
+	handler := modbus.NewRTUClientHandler(opt.SerialPort)
+	handler.BaudRate = 115200
+	handler.DataBits = 8
+	handler.Parity = "N"
+	handler.StopBits = 1
+	handler.SlaveId = 1
+	handler.Timeout = 5 * time.Second
+
+	err = handler.Connect()
 	if err != nil {
-		return errors.Wrap(err, "initial status")
+		return errors.Wrap(err, "connect to serial port")
 	}
 
-	SetupStats(logger)
+	client := modbus.NewClient(handler)
+
+	s := SetupStats(logger)
 
 	server, err := standard_server.NewServer(&standard_server.Config{
 		Logger:    logger,
@@ -54,99 +64,98 @@ func Run() error {
 		return errors.Wrap(err, "new server")
 	}
 
-	return errors.Wrap(server.Run(), "run server")
+	errCh := make(chan error)
+
+	go runloop(errCh, client, s)
+	go func() {
+		errCh <- errors.Wrap(server.Run(), "run server")
+	}()
+
+	return errors.Wrap(<-errCh, "exit")
 }
 
-func SetupStats(logger *zap.Logger) {
-	debounce := NewDebouncer()
-	var lock sync.Mutex
-	var status gotracer.TracerStatus
-	var statusErr error
-
-	read := func(callback func(status *gotracer.TracerStatus) float64) float64 {
-		debounce.Debounce("read", 2*time.Second, func() {
-			func() {
-				lock.Lock()
-				defer lock.Unlock()
-				logger.Info("calling status")
-				status, statusErr = gotracer.Status(opt.SerialPort)
-				if statusErr != nil {
-					logger.Info("error reading status", zap.Error(statusErr))
-				}
-			}()
-		})
-
-		var currentStatus gotracer.TracerStatus
-		var currentErr error
-		func() {
-			lock.Lock()
-			defer lock.Unlock()
-			currentErr = statusErr
-			currentStatus = status // copy current state
-		}()
-
-		if currentErr != nil {
-			return math.NaN()
-		} else {
-			return callback(&currentStatus)
+func runloop(errCh chan error, client modbus.Client, s *stats) {
+	for {
+		results, err := client.ReadInputRegisters(0x331A, 1)
+		if err != nil {
+			errCh <- errors.Wrap(err, "read input registers")
+			return
 		}
+
+		s.BatteryVoltage.Set(getFloatFrom16Bit(results))
 	}
+}
 
-	newStat := func(name string, f func(status *gotracer.TracerStatus) float64) {
-		simpleGaugeFunc(name, func() float64 {
-			return read(f)
-		})
-	}
+type stats struct {
+	BatteryVoltage *metrics.TimeoutGauge
+}
 
-	newStat("array_voltage", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.ArrayVoltage)
+func SetupStats(logger *zap.Logger) *stats {
+
+	s := &stats{}
+
+	s.BatteryVoltage = metrics.NewTimeoutGauge(time.Minute, prometheus.GaugeOpts{
+		Namespace: "heads",
+		Subsystem: "solar",
+		Name:      "battery_voltage",
 	})
+	prometheus.MustRegister(s.BatteryVoltage.G)
 
-	newStat("array_power", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.ArrayPower)
-	})
+	return s
 
-	newStat("array_current", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.ArrayCurrent)
-	})
+	//newStat("array_voltage", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.ArrayVoltage)
+	//})
+	//
+	//newStat("array_power", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.ArrayPower)
+	//})
+	//
+	//newStat("array_current", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.ArrayCurrent)
+	//})
+	//
+	//newStat("battery_voltage", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatteryVoltage)
+	//})
+	//
+	//newStat("battery_current", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatteryCurrent)
+	//})
+	//
+	//newStat("battery_state_of_charge", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatterySOC)
+	//})
+	//
+	//newStat("battery_temperature_celsius", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatteryTemp)
+	//})
+	//
+	//newStat("battery_temperature_fahrenheit", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatteryTemp)*9.0/5.0 + 32.0
+	//})
+	//
+	//newStat("load_voltage", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.LoadVoltage)
+	//})
+	//
+	//newStat("load_current", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.LoadCurrent)
+	//})
+	//
+	//newStat("load_power", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.LoadPower)
+	//})
+	//
+	//newStat("device_temperature_celsius", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatteryTemp)
+	//})
+	//
+	//newStat("device_temperature_fahrenheit", func(status *gotracer.TracerStatus) float64 {
+	//	return float64(status.BatteryTemp)*9.0/5.0 + 32.0
+	//})
+}
 
-	newStat("battery_voltage", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatteryVoltage)
-	})
-
-	newStat("battery_current", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatteryCurrent)
-	})
-
-	newStat("battery_state_of_charge", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatterySOC)
-	})
-
-	newStat("battery_temperature_celsius", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatteryTemp)
-	})
-
-	newStat("battery_temperature_fahrenheit", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatteryTemp)*9.0/5.0 + 32.0
-	})
-
-	newStat("load_voltage", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.LoadVoltage)
-	})
-
-	newStat("load_current", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.LoadCurrent)
-	})
-
-	newStat("load_power", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.LoadPower)
-	})
-
-	newStat("device_temperature_celsius", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatteryTemp)
-	})
-
-	newStat("device_temperature_fahrenheit", func(status *gotracer.TracerStatus) float64 {
-		return float64(status.BatteryTemp)*9.0/5.0 + 32.0
-	})
+func getFloatFrom16Bit(data []byte) float64 {
+	return float64(binary.BigEndian.Uint16(data)) / 100
 }
