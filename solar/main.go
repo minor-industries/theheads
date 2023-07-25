@@ -1,17 +1,15 @@
 package solar
 
 import (
-	"encoding/binary"
-	"encoding/hex"
 	"fmt"
 	"github.com/cacktopus/theheads/common/standard_server"
+	"github.com/cacktopus/theheads/solar/convert"
 	"github.com/goburrow/modbus"
 	"github.com/jessevdk/go-flags"
 	"github.com/minor-industries/platform/common/metrics"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
-	"math"
 	"time"
 )
 
@@ -46,13 +44,13 @@ func Run() error {
 	const d2 = 1.0 / 100.0
 
 	metrics_ := []*metric{
-		{Name: "array_voltage", CB: unsignedInt16(0x3100, d2)},
-		{Name: "array_current", CB: unsignedInt16(0x3101, d2)},
-		{Name: "array_power", CB: unsignedInt32(0x3102, d2)},
+		{Name: "array_voltage", CB: convert.UnsignedInt16(0x3100, d2)},
+		{Name: "array_current", CB: convert.UnsignedInt16(0x3101, d2)},
+		{Name: "array_power", CB: convert.UnsignedInt32(0x3102, d2)},
 
-		{Name: "load_voltage", CB: unsignedInt16(0x310C, d2)},
-		{Name: "load_current", CB: unsignedInt16(0x310D, d2)},
-		{Name: "load_power", CB: unsignedInt32(0x310E, d2)},
+		{Name: "load_voltage", CB: convert.UnsignedInt16(0x310C, d2)},
+		{Name: "load_current", CB: convert.UnsignedInt16(0x310D, d2)},
+		{Name: "load_power", CB: convert.UnsignedInt32(0x310E, d2)},
 
 		//{Name: "", CB: nil},
 		//{Name: "", CB: nil},
@@ -60,9 +58,12 @@ func Run() error {
 		//{Name: "", CB: nil},
 		//{Name: "", CB: nil},
 
-		{Name: "battery_voltage", CB: unsignedInt16(0x331A, d2)},
-		{Name: "battery_current", CB: signedInt32(0x331B, d2)},
-		{Name: "battery_power", CB: unsignedInt32(0x3106, d2)},
+		{Name: "battery_voltage", CB: convert.UnsignedInt16(0x331A, d2)},
+		{Name: "battery_current", CB: convert.SignedInt32(0x331B, d2)},
+		{Name: "battery_power", CB: convert.UnsignedInt32(0x3106, d2)},
+		{Name: "battery_state_of_charge", CB: convert.UnsignedInt16(0x311A, 1.0)},
+
+		{Name: "battery_temperature_celsius", CB: convert.SignedInt16(0x3110, d2)},
 	}
 
 	SetupMetrics(metrics_)
@@ -104,63 +105,10 @@ func runloop(logger *zap.Logger, client modbus.Client, metrics_ []*metric) {
 	}
 }
 
-type converter func(client modbus.Client) (float64, error)
-
 type metric struct {
 	Name string
-	CB   converter
+	CB   convert.Converter
 	G    *metrics.TimeoutGauge
-}
-
-func unsignedInt16(addr uint16, scale float64) converter {
-	return func(client modbus.Client) (float64, error) {
-		data, err := client.ReadInputRegisters(addr, 1)
-		if err != nil {
-			return 0, errors.Wrap(err, "read input registers")
-		}
-
-		if len(data) != 2 {
-			return math.NaN(), fmt.Errorf("invalid data length")
-		}
-
-		val := getFloatFromUnsigned16Bit(data) * scale
-		fmt.Println(val)
-		return val, nil
-	}
-}
-
-func unsignedInt32(addr uint16, scale float64) converter {
-	return func(client modbus.Client) (float64, error) {
-		data, err := client.ReadInputRegisters(addr, 2)
-		if err != nil {
-			return math.NaN(), errors.Wrap(err, "read input registers")
-		}
-
-		if len(data) != 4 {
-			return math.NaN(), fmt.Errorf("invalid data length")
-		}
-
-		val := getFloatFromUnsigned16Bit(data) * scale
-
-		fmt.Printf("0x%x: %s, %f\n", addr, hex.Dump(data), val)
-		return val, nil
-	}
-}
-
-func signedInt32(addr uint16, scale float64) converter {
-	return func(client modbus.Client) (float64, error) {
-		data, err := client.ReadInputRegisters(addr, 2)
-		if err != nil {
-			return math.NaN(), errors.Wrap(err, "read input registers")
-		}
-
-		if len(data) != 4 {
-			return math.NaN(), fmt.Errorf("invalid data length")
-		}
-
-		val := getFloatFromSigned32Bit(data) * scale
-		return val, nil
-	}
 }
 
 func SetupMetrics(metrics_ []*metric) {
@@ -224,27 +172,4 @@ func SetupMetrics(metrics_ []*metric) {
 	//newStat("device_temperature_fahrenheit", func(status *gotracer.TracerStatus) float64 {
 	//	return float64(status.BatteryTemp)*9.0/5.0 + 32.0
 	//})
-}
-
-func getFloatFromUnsigned16Bit(data []byte) float64 {
-	return float64(binary.BigEndian.Uint16(data))
-}
-
-func getFloatFromSigned32Bit(data []byte) float64 {
-	return float64(getSigned32BitData(data))
-}
-
-func getFloatFromUnsigned32Bit(data []byte) float64 {
-	return float64(getUnsigned32BitData(data))
-}
-
-func getUnsigned32BitData(data []byte) uint32 {
-	var buf []byte
-	buf = append(buf, data[2:4]...)
-	buf = append(buf, data[0:2]...)
-	return binary.BigEndian.Uint32(buf)
-}
-
-func getSigned32BitData(data []byte) int32 {
-	return int32(getUnsigned32BitData(data))
 }
