@@ -2,6 +2,8 @@ package solar
 
 import (
 	"encoding/binary"
+	"encoding/hex"
+	"fmt"
 	"github.com/cacktopus/theheads/common/standard_server"
 	"github.com/goburrow/modbus"
 	"github.com/jessevdk/go-flags"
@@ -9,20 +11,9 @@ import (
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
+	"math"
 	"time"
 )
-
-func simpleGaugeFunc(name string, callback func() float64) prometheus.GaugeFunc {
-	g := prometheus.NewGaugeFunc(prometheus.GaugeOpts{
-		Namespace: "heads",
-		Subsystem: "solar",
-		Name:      name,
-	}, func() float64 {
-		return callback()
-	})
-	prometheus.MustRegister(g)
-	return g
-}
 
 var opt struct {
 	SerialPort string `long:"serial-port" env:"SERIAL_PORT" default:"/dev/ttyXRUSB0"`
@@ -52,7 +43,15 @@ func Run() error {
 
 	client := modbus.NewClient(handler)
 
-	s := SetupStats(logger)
+	metrics_ := []*metric{
+		{Name: "array_voltage", CB: float64by100(0x3100)},
+		{Name: "array_current", CB: float64by100(0x3101)},
+
+		{Name: "battery_voltage", CB: float64by100(0x331A)},
+		{Name: "battery_current", CB: signedInt32by100(0x331B)},
+	}
+
+	SetupMetrics(metrics_)
 
 	server, err := standard_server.NewServer(&standard_server.Config{
 		Logger:    logger,
@@ -66,7 +65,7 @@ func Run() error {
 
 	errCh := make(chan error)
 
-	go runloop(errCh, client, s)
+	go runloop(logger, client, metrics_)
 	go func() {
 		errCh <- errors.Wrap(server.Run(), "run server")
 	}()
@@ -74,34 +73,67 @@ func Run() error {
 	return errors.Wrap(<-errCh, "exit")
 }
 
-func runloop(errCh chan error, client modbus.Client, s *stats) {
-	for {
-		results, err := client.ReadInputRegisters(0x331A, 1)
-		if err != nil {
-			errCh <- errors.Wrap(err, "read input registers")
-			return
-		}
+func runloop(logger *zap.Logger, client modbus.Client, metrics_ []*metric) {
+	ticker := time.NewTicker(5 * time.Second)
 
-		s.BatteryVoltage.Set(getFloatFrom16Bit(results))
+	for range ticker.C {
+		for _, m := range metrics_ {
+			val, err := m.CB(client)
+			if err != nil {
+				logger.Error("error reading modbus", zap.Error(err))
+				continue
+			}
+
+			m.G.Set(val)
+		}
 	}
 }
 
-type stats struct {
-	BatteryVoltage *metrics.TimeoutGauge
+type converter func(client modbus.Client) (float64, error)
+
+type metric struct {
+	Name string
+	CB   converter
+	G    *metrics.TimeoutGauge
 }
 
-func SetupStats(logger *zap.Logger) *stats {
+func float64by100(addr uint16) converter {
+	return func(client modbus.Client) (float64, error) {
+		data, err := client.ReadInputRegisters(addr, 1)
+		if err != nil {
+			return 0, errors.Wrap(err, "read input registers")
+		}
+		return getFloatFrom16Bit(data), nil
+	}
+}
 
-	s := &stats{}
+func signedInt32by100(addr uint16) converter {
+	return func(client modbus.Client) (float64, error) {
+		data, err := client.ReadInputRegisters(addr, 2)
+		if err != nil {
+			return math.NaN(), errors.Wrap(err, "read input registers")
+		}
 
-	s.BatteryVoltage = metrics.NewTimeoutGauge(time.Minute, prometheus.GaugeOpts{
-		Namespace: "heads",
-		Subsystem: "solar",
-		Name:      "battery_voltage",
-	})
-	prometheus.MustRegister(s.BatteryVoltage.G)
+		if len(data) != 4 {
+			return math.NaN(), fmt.Errorf("invalid data length")
+		}
 
-	return s
+		fmt.Println(hex.Dump(data))
+
+		val := getFloatFromSigned32Bit(data)
+		return val, nil
+	}
+}
+
+func SetupMetrics(metrics_ []*metric) {
+	for _, m := range metrics_ {
+		m.G = metrics.NewTimeoutGauge(time.Minute, prometheus.GaugeOpts{
+			Namespace: "heads",
+			Subsystem: "solar",
+			Name:      m.Name,
+		})
+		prometheus.MustRegister(m.G.G)
+	}
 
 	//newStat("array_voltage", func(status *gotracer.TracerStatus) float64 {
 	//	return float64(status.ArrayVoltage)
@@ -158,4 +190,22 @@ func SetupStats(logger *zap.Logger) *stats {
 
 func getFloatFrom16Bit(data []byte) float64 {
 	return float64(binary.BigEndian.Uint16(data)) / 100
+}
+
+func getFloatFromSigned32Bit(data []byte) float64 {
+	return float64(getSigned32BitData(data)) / 100
+}
+
+func getUnsigned32BitData(data []byte) uint32 {
+	var buf []byte
+	buf = append(buf, data[2:4]...)
+	buf = append(buf, data[0:2]...)
+	return binary.BigEndian.Uint32(buf)
+}
+
+func getSigned32BitData(data []byte) int32 {
+	var buf []byte
+	buf = append(buf, data[2:4]...)
+	buf = append(buf, data[0:2]...)
+	return int32(binary.BigEndian.Uint32(buf))
 }
