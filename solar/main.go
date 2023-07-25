@@ -43,12 +43,26 @@ func Run() error {
 
 	client := modbus.NewClient(handler)
 
-	metrics_ := []*metric{
-		{Name: "array_voltage", CB: float64by100(0x3100)},
-		{Name: "array_current", CB: float64by100(0x3101)},
+	const d2 = 1.0 / 100.0
 
-		{Name: "battery_voltage", CB: float64by100(0x331A)},
-		{Name: "battery_current", CB: signedInt32by100(0x331B)},
+	metrics_ := []*metric{
+		{Name: "array_voltage", CB: unsignedInt16(0x3100, d2)},
+		{Name: "array_current", CB: unsignedInt16(0x3101, d2)},
+		{Name: "array_power", CB: unsignedInt32(0x3102, d2)},
+
+		{Name: "load_voltage", CB: unsignedInt16(0x310C, d2)},
+		{Name: "load_current", CB: unsignedInt16(0x310D, d2)},
+		{Name: "load_power", CB: unsignedInt32(0x310E, d2)},
+
+		//{Name: "", CB: nil},
+		//{Name: "", CB: nil},
+		//{Name: "", CB: nil},
+		//{Name: "", CB: nil},
+		//{Name: "", CB: nil},
+
+		{Name: "battery_voltage", CB: unsignedInt16(0x331A, d2)},
+		{Name: "battery_current", CB: signedInt32(0x331B, d2)},
+		{Name: "battery_power", CB: unsignedInt32(0x3106, d2)},
 	}
 
 	SetupMetrics(metrics_)
@@ -78,6 +92,7 @@ func runloop(logger *zap.Logger, client modbus.Client, metrics_ []*metric) {
 
 	for range ticker.C {
 		for _, m := range metrics_ {
+			fmt.Println("\n" + m.Name)
 			val, err := m.CB(client)
 			if err != nil {
 				logger.Error("error reading modbus", zap.Error(err))
@@ -97,17 +112,24 @@ type metric struct {
 	G    *metrics.TimeoutGauge
 }
 
-func float64by100(addr uint16) converter {
+func unsignedInt16(addr uint16, scale float64) converter {
 	return func(client modbus.Client) (float64, error) {
 		data, err := client.ReadInputRegisters(addr, 1)
 		if err != nil {
 			return 0, errors.Wrap(err, "read input registers")
 		}
-		return getFloatFrom16Bit(data), nil
+
+		if len(data) != 2 {
+			return math.NaN(), fmt.Errorf("invalid data length")
+		}
+
+		val := getFloatFromUnsigned16Bit(data) * scale
+		fmt.Println(val)
+		return val, nil
 	}
 }
 
-func signedInt32by100(addr uint16) converter {
+func unsignedInt32(addr uint16, scale float64) converter {
 	return func(client modbus.Client) (float64, error) {
 		data, err := client.ReadInputRegisters(addr, 2)
 		if err != nil {
@@ -118,9 +140,25 @@ func signedInt32by100(addr uint16) converter {
 			return math.NaN(), fmt.Errorf("invalid data length")
 		}
 
-		fmt.Println(hex.Dump(data))
+		val := getFloatFromUnsigned16Bit(data) * scale
 
-		val := getFloatFromSigned32Bit(data)
+		fmt.Printf("0x%x: %s, %f\n", addr, hex.Dump(data), val)
+		return val, nil
+	}
+}
+
+func signedInt32(addr uint16, scale float64) converter {
+	return func(client modbus.Client) (float64, error) {
+		data, err := client.ReadInputRegisters(addr, 2)
+		if err != nil {
+			return math.NaN(), errors.Wrap(err, "read input registers")
+		}
+
+		if len(data) != 4 {
+			return math.NaN(), fmt.Errorf("invalid data length")
+		}
+
+		val := getFloatFromSigned32Bit(data) * scale
 		return val, nil
 	}
 }
@@ -188,12 +226,16 @@ func SetupMetrics(metrics_ []*metric) {
 	//})
 }
 
-func getFloatFrom16Bit(data []byte) float64 {
-	return float64(binary.BigEndian.Uint16(data)) / 100
+func getFloatFromUnsigned16Bit(data []byte) float64 {
+	return float64(binary.BigEndian.Uint16(data))
 }
 
 func getFloatFromSigned32Bit(data []byte) float64 {
-	return float64(getSigned32BitData(data)) / 100
+	return float64(getSigned32BitData(data))
+}
+
+func getFloatFromUnsigned32Bit(data []byte) float64 {
+	return float64(getUnsigned32BitData(data))
 }
 
 func getUnsigned32BitData(data []byte) uint32 {
@@ -204,8 +246,5 @@ func getUnsigned32BitData(data []byte) uint32 {
 }
 
 func getSigned32BitData(data []byte) int32 {
-	var buf []byte
-	buf = append(buf, data[2:4]...)
-	buf = append(buf, data[0:2]...)
-	return int32(binary.BigEndian.Uint32(buf))
+	return int32(getUnsigned32BitData(data))
 }
