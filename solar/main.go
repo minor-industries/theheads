@@ -1,7 +1,6 @@
 package solar
 
 import (
-	"fmt"
 	"github.com/cacktopus/theheads/common/standard_server"
 	"github.com/cacktopus/theheads/solar/convert"
 	"github.com/goburrow/modbus"
@@ -64,6 +63,7 @@ func Run() error {
 		{Name: "battery_state_of_charge", CB: convert.UnsignedInt16(0x311A, 1.0)},
 
 		{Name: "battery_temperature_celsius", CB: convert.SignedInt16(0x3110, d2)},
+		{Name: "device_temperature_celsius", CB: convert.SignedInt16(0x3111, d2)},
 	}
 
 	SetupMetrics(metrics_)
@@ -93,7 +93,6 @@ func runloop(logger *zap.Logger, client modbus.Client, metrics_ []*metric) {
 
 	for range ticker.C {
 		for _, m := range metrics_ {
-			fmt.Println("\n" + m.Name)
 			val, err := m.CB(client)
 			if err != nil {
 				logger.Error("error reading modbus", zap.Error(err))

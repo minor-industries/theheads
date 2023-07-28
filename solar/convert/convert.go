@@ -2,7 +2,6 @@ package convert
 
 import (
 	"encoding/binary"
-	"encoding/hex"
 	"fmt"
 	"github.com/goburrow/modbus"
 	"github.com/pkg/errors"
@@ -23,7 +22,6 @@ func UnsignedInt16(addr uint16, scale float64) Converter {
 		}
 
 		val := unsigned16Bit(data) * scale
-		fmt.Println(val)
 		return val, nil
 	}
 }
@@ -40,7 +38,6 @@ func SignedInt16(addr uint16, scale float64) Converter {
 		}
 
 		val := signed16Bit(data) * scale
-		fmt.Println(val)
 		return val, nil
 	}
 }
@@ -58,7 +55,6 @@ func UnsignedInt32(addr uint16, scale float64) Converter {
 
 		val := unsigned32Bit(data) * scale
 
-		fmt.Printf("0x%x: %s, %f\n", addr, hex.Dump(data), val)
 		return val, nil
 	}
 }
