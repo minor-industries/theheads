@@ -43,7 +43,7 @@ services:
       FAKE_STEPPER: "1"
 
   camera01:
-    image: camera-amd64
+    image: camera-arm64
     command:
       - /build/app/camera
     environment:
@@ -59,7 +59,7 @@ services:
       - 5010:5000
 
   camera02:
-    image: camera-amd64
+    image: camera-arm64
     environment:
       INSTANCE: camera-02
       FILENAME: /d/pi43.raw

@@ -63,7 +63,7 @@ func runDockerCamera(
 	instance, filename string,
 ) int {
 	camera, err := pool.RunWithOptions(&dockertest.RunOptions{
-		Repository:   "camera-amd64",
+		Repository:   "camera-arm64",
 		Tag:          "latest",
 		Cmd:          []string{"/bin/sleep", "60000"},
 		Mounts:       []string{os.ExpandEnv("$PWD/dev") + ":/d"},
@@ -100,13 +100,14 @@ func runDockerCamera(
 			}
 		}()
 
-		_, err := camera.Exec([]string{"/build/app/camera"}, dockertest.ExecOptions{
+		_, err := camera.Exec([]string{"/build/bin/camera"}, dockertest.ExecOptions{
 			Env: []string{
 				"INSTANCE=" + instance,
-				"FILENAME=" + filename,
-				"DRAW_FRAME=roi",
-				"ROI=0,50,0,50",
+				"SOURCE=file:" + "/d/pi42.raw",
+				"DRAW_FRAME=orig",
 				"FLOODLIGHT_PIN=-1",
+				"WIDTH=320",
+				"HEIGHT=240",
 			},
 			StdOut: wOut,
 			StdErr: wErr,

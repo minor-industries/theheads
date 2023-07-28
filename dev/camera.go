@@ -9,7 +9,7 @@ func cameraEnv(name string, streamFile string) *cfg.Cfg {
 	return &cfg.Cfg{
 		BitrateKB:         400,
 		CenterLine:        false,
-		DetectFaces:       true,
+		DetectFaces:       false, // TODO? (this was causing crashes in dev)
 		DrawFrame:         "orig",
 		DrawMotion:        true,
 		FloodlightPin:     17,
