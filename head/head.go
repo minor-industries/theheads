@@ -93,7 +93,8 @@ func Run(env *cfg.Cfg) {
 
 	go controller.Run()
 
-	go heartbeat.NewMonitor(env, b).PublishLoop()
+	heartbeatMonitor := heartbeat.NewMonitor(env, b)
+	go heartbeatMonitor.PublishLoop()
 
 	svgs := cmap.New[[]byte]()
 
@@ -115,6 +116,7 @@ func Run(env *cfg.Cfg) {
 			heads.RegisterVoicesServer(grpcServer, voices.NewServer(&env.Voices, logger))
 			heads.RegisterEventsServer(grpcServer, h)
 			heads.RegisterPingServer(grpcServer, h)
+			heads.RegisterHeartbeatServer(grpcServer, heartbeatMonitor)
 			return nil
 		},
 		HttpSetup: func(router *gin.Engine) error {
