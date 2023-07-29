@@ -172,7 +172,7 @@ func (es *EventStreamer) publish(typ string, data []byte) error {
 		eventReceived.WithLabelValues(event.Type, msg.CameraName).Inc()
 		es.broker.Publish(msg)
 
-	case "active":
+	case "heartbeat":
 		msg := &schema.Heartbeat{}
 		err = json.Unmarshal(event.Data, msg)
 		if err != nil {
