@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/cacktopus/theheads/boss"
 	util2 "github.com/cacktopus/theheads/boss/util"
 	"github.com/cacktopus/theheads/camera"
@@ -28,7 +29,11 @@ func main() {
 	head01 := headEnv("head-01")
 	head02 := headEnv("head-02")
 
-	logger.Info("service config", zap.String("instance", head01.Instance), zap.Int("port", head01.Port))
+	logger.Info(
+		"service config",
+		zap.String("instance", head01.Instance),
+		zap.String("addr", fmt.Sprintf("localhost:%d", head01.Port)),
+	)
 
 	var wg sync.WaitGroup
 	wg.Add(1)

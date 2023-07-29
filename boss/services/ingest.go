@@ -173,12 +173,12 @@ func (es *EventStreamer) publish(typ string, data []byte) error {
 		es.broker.Publish(msg)
 
 	case "active":
-		msg := &schema.Active{}
+		msg := &schema.Heartbeat{}
 		err = json.Unmarshal(event.Data, msg)
 		if err != nil {
 			return err
 		}
-		source := fmt.Sprintf("%s-%s", msg.Component, msg.HeadName)
+		source := fmt.Sprintf("%s-%s", msg.Component, msg.Instance)
 		eventReceived.WithLabelValues(event.Type, source).Inc()
 		es.broker.Publish(msg)
 

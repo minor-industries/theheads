@@ -11,6 +11,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/goburrow/modbus v0.1.0
 	github.com/golang/protobuf v1.5.3
+	github.com/google/uuid v1.3.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/gvalkov/golang-evdev v0.0.0-20220815104727-7e27d6ce89b6
 	github.com/hashicorp/serf v0.10.1
@@ -27,8 +28,10 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.16.0
 	github.com/rpi-ws281x/rpi-ws281x-go v1.0.8
+	github.com/rqlite/gorqlite v0.0.0-20230708021416-2acd02b70b79
 	github.com/ryanuber/go-glob v1.0.0
 	github.com/soheilhy/cmux v0.1.5
+	github.com/sony/gobreaker v0.5.0
 	github.com/stretchr/testify v1.8.4
 	github.com/vrischmann/envconfig v1.3.0
 	go.uber.org/atomic v1.11.0

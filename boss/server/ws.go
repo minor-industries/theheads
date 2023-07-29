@@ -18,7 +18,7 @@ func manageWebsocket(conn *websocket.Conn, msgBroker *broker.Broker) {
 	for {
 		for m := range msgs {
 			switch msg := m.(type) {
-			case *schema.HeadPositioned, *schema.FocalPoints, *schema.Active:
+			case *schema.HeadPositioned, *schema.FocalPoints, *schema.Heartbeat:
 				data, err := json.Marshal(msg)
 				if err != nil {
 					panic(err)

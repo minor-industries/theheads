@@ -2,12 +2,12 @@ package head
 
 import (
 	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/schema"
 	"github.com/cacktopus/theheads/common/standard_server"
 	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/gen/go/heads"
 	"github.com/cacktopus/theheads/head/cfg"
 	headgrpc "github.com/cacktopus/theheads/head/grpc"
+	"github.com/cacktopus/theheads/head/heartbeat"
 	"github.com/cacktopus/theheads/head/log_limiter"
 	"github.com/cacktopus/theheads/head/motor"
 	"github.com/cacktopus/theheads/head/motor/fake_stepper"
@@ -28,26 +28,6 @@ import (
 	"sync"
 	"time"
 )
-
-func publishLoop(b *broker.Broker, cfg *cfg.Cfg, controller *motor.Controller) {
-	for {
-		time.Sleep(5 * time.Second)
-
-		state := controller.GetState()
-
-		msg := &schema.Active{
-			Component: "head",
-			HeadName:  cfg.Instance,
-			Extra: schema.Extra{
-				HeadName:     "",
-				StepPosition: state.Pos,
-				Rotation:     state.Rotation(),
-			},
-		}
-
-		b.Publish(msg)
-	}
-}
 
 var metricsOnce sync.Once
 
@@ -113,7 +93,7 @@ func Run(env *cfg.Cfg) {
 
 	go controller.Run()
 
-	go publishLoop(b, env, controller)
+	go heartbeat.NewMonitor(env, b).PublishLoop()
 
 	svgs := cmap.New[[]byte]()
 
