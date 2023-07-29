@@ -86,7 +86,7 @@ func (m *Monitor) ack(id string) {
 		m.logger.Info(
 			"acked heartbeat",
 			zap.String("id", id),
-			zap.Int64("duration_ms", dt.Milliseconds()),
+			zap.Float64("duration_ms", dt.Seconds()*1000.0),
 		)
 		m.currentBeat = beat{}
 	}
