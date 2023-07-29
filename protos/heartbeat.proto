@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package heads;
+
+import "common.proto";
+
+message AckIn {
+  string id = 1;
+}
+
+service Heartbeat {
+  rpc Ack(AckIn) returns (Empty);
+}

@@ -8,6 +8,7 @@ import (
 	"github.com/cacktopus/theheads/boss/scene"
 	"github.com/cacktopus/theheads/boss/services"
 	"github.com/cacktopus/theheads/common/broker"
+	"github.com/cacktopus/theheads/common/schema"
 	"github.com/cacktopus/theheads/common/standard_server"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
@@ -52,4 +53,15 @@ func (b *Boss) SetupMetrics() {
 		}
 		return result
 	}))
+}
+
+func (b *Boss) processHeartbeat(msg *schema.Heartbeat) {
+	switch msg.Component {
+	case "head":
+		head := b.Scene.Heads[msg.Instance]
+		if err := b.HeadManager.AckHeartbeat(head.URI(), msg.ID); err != nil {
+			b.Logger.Warn("failed to ack heartbeat", zap.Error(err))
+			return
+		}
+	}
 }

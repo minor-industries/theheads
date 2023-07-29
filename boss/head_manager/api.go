@@ -144,3 +144,22 @@ func (h *HeadManager) EnableFaceDetection(
 
 	return errors.Wrap(err, "enable detect faces")
 }
+
+func (h *HeadManager) AckHeartbeat(
+	uri string,
+	id string,
+) error {
+	conn, err := h.GetConn(uri)
+	if err != nil {
+		return errors.Wrap(err, "get connection")
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if _, err := heads.NewHeartbeatClient(conn.Conn).Ack(ctx, &heads.AckIn{Id: id}); err != nil {
+		return errors.Wrap(err, "ack heartbeat")
+	}
+
+	return nil
+}

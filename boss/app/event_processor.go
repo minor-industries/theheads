@@ -17,6 +17,8 @@ func (b *Boss) ProcessEvents() {
 			b.processMotion(msg)
 		case *schema.FaceDetected:
 			b.processFaceDetected(msg)
+		case *schema.Heartbeat:
+			b.processHeartbeat(msg)
 		}
 	}
 }
