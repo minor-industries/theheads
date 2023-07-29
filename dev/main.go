@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ory/dockertest/v3"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"sync"
@@ -23,6 +24,11 @@ const dockerCamera = false
 func main() {
 	logger, _ := util.NewLogger(true)
 	gin.SetMode(gin.ReleaseMode)
+
+	head01 := headEnv("head-01")
+	head02 := headEnv("head-02")
+
+	logger.Info("service config", zap.String("instance", head01.Instance), zap.Int("port", head01.Port))
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -54,10 +60,7 @@ func main() {
 		go camera.Run(camera02Cfg)
 	}
 
-	head01 := headEnv("head-01")
 	services.Register("head", head01.Instance, head01.Port)
-
-	head02 := headEnv("head-02")
 	services.Register("head", head02.Instance, head02.Port)
 
 	boss01 := bossEnv()
