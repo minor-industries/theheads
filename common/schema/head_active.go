@@ -1,11 +1,8 @@
 package schema
 
-import "time"
-
 type Heartbeat struct {
 	Component string
 	Instance  string
-	Start     time.Duration
 	ID        string
 }
 

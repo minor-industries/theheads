@@ -93,7 +93,7 @@ func Run(env *cfg.Cfg) {
 
 	go controller.Run()
 
-	heartbeatMonitor := heartbeat.NewMonitor(env, b)
+	heartbeatMonitor := heartbeat.NewMonitor(logger, env, b)
 	go heartbeatMonitor.PublishLoop()
 
 	svgs := cmap.New[[]byte]()
