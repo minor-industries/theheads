@@ -59,7 +59,7 @@ func (m *Monitor) beat() {
 		defer m.lock.Unlock()
 
 		if m.currentBeat.ID != "" {
-			m.logger.Info("heartbeat timed out")
+			m.logger.Info("heartbeat timed out", zap.String("id", m.currentBeat.ID))
 		}
 
 		m.currentBeat = beat{

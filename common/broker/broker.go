@@ -70,3 +70,7 @@ func (b *Broker) Publish(msg Message) {
 func (b *Broker) SubCount() int {
 	return int(atomic.LoadInt32(&b.subCount))
 }
+
+type Publisher interface {
+	Publish(msg Message)
+}
