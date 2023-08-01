@@ -19,8 +19,8 @@ func SetupRoutes(boss *app.Boss) (*standard_server.Server, error) {
 		HttpSetup: func(r *gin.Engine) error {
 			pprof.Register(r)
 
-			r.GET("/installation/dev/scene.json", func(c *gin.Context) {
-				c.JSON(200, boss.Scene)
+			r.GET("/installation/dev/scene.toml", func(c *gin.Context) {
+				c.TOML(200, boss.Scene)
 			})
 
 			r.GET("/", func(c *gin.Context) {

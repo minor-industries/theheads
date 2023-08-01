@@ -51,9 +51,10 @@ type Camera struct {
 	Name        string
 	Pos         Pos
 	Rot         float64
-	M           geom2.Mat `toml:"-"`
-	Stand       *Stand    `toml:"-"`
-	Path        []string  `toml:"-"`
+
+	M     geom2.Mat `toml:"-"`
+	Stand *Stand    `toml:"-"`
+	Path  []string  `toml:"-"`
 }
 
 func (c Camera) URI() string {
@@ -225,11 +226,6 @@ func getPrefix(prefix string) (map[string][]byte, error) {
 }
 
 func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
-	scene := &Scene{
-		CameraMap: map[string]*Camera{},
-		HeadMap:   map[string]*Head{},
-	}
-
 	fullPath := path.Join(scenePath, sceneName+".toml")
 
 	content, err := os.ReadFile(fullPath)
@@ -237,10 +233,26 @@ func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
 		return nil, errors.Wrap(err, "readfile")
 	}
 
+	sc, err := Build(content)
+	if err != nil {
+		return nil, errors.Wrap(err, "build")
+	}
+
+	// Texts
+	sc.Texts = LoadTexts(scenePath, textSet)
+	return sc, nil
+}
+
+func Build(content []byte) (*Scene, error) {
+	scene := &Scene{
+		CameraMap: map[string]*Camera{},
+		HeadMap:   map[string]*Head{},
+	}
+
 	d := toml.NewDecoder(bytes.NewBuffer(content))
 	d.DisallowUnknownFields()
 
-	err = d.Decode(scene)
+	err := d.Decode(scene)
 	if err != nil {
 		return nil, errors.Wrap(err, "decode toml")
 	}
@@ -300,9 +312,6 @@ func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
 		scene.CameraSensitivity = defaultCameraSensitivity
 
 	}
-
-	// Texts
-	scene.Texts = LoadTexts(scenePath, textSet)
 
 	return scene, nil
 }

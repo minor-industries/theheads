@@ -4,7 +4,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/cacktopus/theheads/boss/frontend/draw"
 	"github.com/cacktopus/theheads/boss/scene"
@@ -65,12 +64,10 @@ func main() {
 		"color": "lightgreen",
 	})
 
-	sceneJson := getJson("/installation/dev/scene.json")
-	fmt.Println(string(sceneJson))
+	sceneContent := get("/installation/dev/scene.toml")
+	fmt.Println(string(sceneContent))
 
-	sc := &scene.Scene{}
-
-	err := json.Unmarshal(sceneJson, sc)
+	sc, err := scene.Build(sceneContent)
 	if err != nil {
 		panic(err)
 	}
@@ -97,7 +94,7 @@ func setupWSClient(draw *draw.Draw) {
 	wsclient.Connect()
 }
 
-func getJson(url string) []byte {
+func get(url string) []byte {
 	// TODO: handle errors, timeouts
 	body := make(chan []byte)
 	xhr := js.Global().Get("XMLHttpRequest").New()

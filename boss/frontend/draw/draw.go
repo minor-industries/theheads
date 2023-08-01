@@ -1,3 +1,6 @@
+//go:build wasm
+// +build wasm
+
 package draw
 
 import (
@@ -125,6 +128,7 @@ func (h *Draw) drawStand(stand *scene.Stand) {
 	radius := 0.20
 
 	for _, head := range stand.Heads {
+		fmt.Println(head.Name)
 		g2 := rotated.Call("group")
 		circle := g2.Call("circle", 0).Call("radius", radius)
 		circle.Call("attr", map[string]interface{}{
