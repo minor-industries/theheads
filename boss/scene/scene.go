@@ -1,19 +1,20 @@
 package scene
 
 import (
+	"bytes"
 	"fmt"
 	geom2 "github.com/cacktopus/theheads/common/geom"
 	"github.com/cacktopus/theheads/common/schema"
 	"github.com/cacktopus/theheads/common/timed_reset"
+	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"math"
 	"math/rand"
+	"os"
 	"path"
 	"strings"
 	"time"
-
-	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -21,39 +22,38 @@ const (
 )
 
 type Scene struct {
-	Stands        []*Stand  `json:"stands"`
-	Scale         int       `json:"scale"`
-	Anchors       []*Anchor `json:"anchors"`
-	Translate     Translate `json:"translate"`
-	Scenes        []string  `json:"scenes"`
-	StartupScenes []string  `json:"startup_scenes" yaml:"startup_scenes"`
-
-	Heads    map[string]*Head `json:"-"`
-	HeadList []*Head          `json:"-"`
-
-	Cameras    map[string]*Camera `json:"-" yaml:"-"`
-	CameraList []*Camera          `json:"-" yaml:"-"`
+	Stands        []*Stand
+	Scale         int
+	Translate     Translate
+	Scenes        []string
+	StartupScenes []string
 
 	// TODO: don't hang these config values off of here
-	CameraSensitivity float64 `json:"camera_sensitivity" yaml:"camera_sensitivity"`
+	CameraSensitivity float64
 
-	Texts []*Text
+	HeadMap map[string]*Head `toml:"-"`
+	Heads   []*Head
+
+	CameraMap map[string]*Camera `toml:"-"`
+	Cameras   []*Camera
+
+	Texts []*Text `toml:"-"`
 }
 
 type Pos struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
+	X float64
+	Y float64
 }
 
 type Camera struct {
-	Description string    `json:"description"`
-	Fov         float64   `json:"fov"`
-	Name        string    `json:"name"`
-	Pos         Pos       `json:"pos"`
-	Rot         float64   `json:"rot"`
-	M           geom2.Mat `json:"-"`
-	Stand       *Stand    `json:"-"`
-	Path        []string  `json:"-"`
+	Description string
+	Fov         float64
+	Name        string
+	Pos         Pos
+	Rot         float64
+	M           geom2.Mat `toml:"-"`
+	Stand       *Stand    `toml:"-"`
+	Path        []string  `toml:"-"`
 }
 
 func (c Camera) URI() string {
@@ -61,14 +61,16 @@ func (c Camera) URI() string {
 }
 
 type Head struct {
-	Name    string    `json:"name"`
-	Path    []string  `json:"-"`
-	Pos     Pos       `json:"pos"`
-	Rot     float64   `json:"rot"`
-	Virtual bool      `json:"virtual"`
-	M       geom2.Mat `json:"-"`
-	MInv    geom2.Mat `json:"-"`
-	Stand   *Stand    `json:"-"`
+	Name string
+
+	Pos     Pos
+	Rot     float64
+	Virtual bool
+
+	Path  []string  `toml:"-"`
+	M     geom2.Mat `toml:"-"`
+	MInv  geom2.Mat `toml:"-"`
+	Stand *Stand    `toml:"-"`
 
 	fearful *timed_reset.Bool
 }
@@ -91,12 +93,6 @@ func (h *Head) CameraURI() string {
 
 func (h *Head) Fearful() bool {
 	return h.fearful.Val()
-}
-
-type Anchor struct {
-	Name    string `json:"name"`
-	Pos     Pos    `json:"pos"`
-	Enabled bool
 }
 
 func SelectHeads(
@@ -125,7 +121,7 @@ func ShuffledHeads(heads map[string]*Head) (result []*Head) {
 
 func (s *Scene) HeadURIs() []string {
 	var result []string
-	for _, head := range s.HeadList {
+	for _, head := range s.Heads {
 		result = append(result, head.URI())
 	}
 	return result
@@ -144,7 +140,7 @@ func (s *Scene) OnFaceDetected(msg *schema.FaceDetected) error {
 }
 
 func (s *Scene) findHeadsForCamera(name string) ([]*Head, error) {
-	camera, ok := s.Cameras[name]
+	camera, ok := s.CameraMap[name]
 	if !ok {
 		return nil, errors.New("unknown camera")
 	}
@@ -156,32 +152,33 @@ func (s *Scene) findHeadsForCamera(name string) ([]*Head, error) {
 }
 
 func (s *Scene) ClearFearful() {
-	for _, head := range s.Heads {
+	for _, head := range s.HeadMap {
 		head.fearful.Clear()
 	}
 }
 
 type Stand struct {
-	CameraNames []string `json:"-" yaml:"cameras"`
-	HeadNames   []string `json:"-" yaml:"heads"`
+	Name string
 
-	Name string    `json:"name"`
-	Pos  Pos       `json:"pos"`
-	Rot  float64   `json:"rot"`
-	M    geom2.Mat `json:"-"`
+	CameraNames []string
+	HeadNames   []string
+
+	Pos Pos
+	Rot float64
 
 	Disabled bool
-	Enabled  bool
 
-	Cameras []*Camera `json:"cameras" yaml:"-"`
-	Heads   []*Head   `json:"heads" yaml:"-"`
+	M geom2.Mat `toml:"-"`
 
-	CameraMap map[string]*Camera `json:"-" yaml:"-"`
-	HeadMap   map[string]*Head   `json:"-" yaml:"-"`
+	Cameras []*Camera `toml:"-"`
+	Heads   []*Head   `toml:"-"`
+
+	CameraMap map[string]*Camera `toml:"-"`
+	HeadMap   map[string]*Head   `toml:"-"`
 }
 type Translate struct {
-	X int `json:"x"`
-	Y int `json:"y"`
+	X int
+	Y int
 }
 
 func (h *Head) GlobalPos() geom2.Vec {
@@ -199,19 +196,6 @@ func (h *Head) PointTo(p geom2.Vec) float64 {
 	to := h.MInv.MulVec(p)
 	theta := math.Atan2(to.Y(), to.X()) * 180 / math.Pi
 	return math.Mod(theta+360.0, 360)
-}
-
-func mustGetYAML(path string, result interface{}) {
-	content, err := ioutil.ReadFile(path)
-
-	if err != nil {
-		panic(errors.Wrap(err, path+" not found"))
-	}
-
-	err = yaml.Unmarshal(content, result)
-	if err != nil {
-		panic(err)
-	}
 }
 
 func getPrefix(prefix string) (map[string][]byte, error) {
@@ -242,11 +226,24 @@ func getPrefix(prefix string) (map[string][]byte, error) {
 
 func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
 	scene := &Scene{
-		Cameras: map[string]*Camera{},
-		Heads:   map[string]*Head{},
+		CameraMap: map[string]*Camera{},
+		HeadMap:   map[string]*Head{},
 	}
 
-	mustGetYAML(path.Join(scenePath, sceneName+".yaml"), scene)
+	fullPath := path.Join(scenePath, sceneName+".toml")
+
+	content, err := os.ReadFile(fullPath)
+	if err != nil {
+		return nil, errors.Wrap(err, "readfile")
+	}
+
+	d := toml.NewDecoder(bytes.NewBuffer(content))
+	d.DisallowUnknownFields()
+
+	err = d.Decode(scene)
+	if err != nil {
+		return nil, errors.Wrap(err, "decode toml")
+	}
 
 	// heads and cameras don't "exist" until they are added to a stand
 	definedHeads := map[string]*Head{}
@@ -254,60 +251,21 @@ func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
 
 	// CameraMap
 
-	cameraYAML, err := getPrefix(path.Join(scenePath, "cameras"))
-	if err != nil {
-		return nil, err
-	}
-
-	for _, yml := range cameraYAML {
-		camera := &Camera{}
-		err := yaml.Unmarshal(yml, &camera)
-		if err != nil {
-			return nil, err
-		}
-
+	for _, camera := range scene.Cameras {
 		camera.M = geom2.ToM(camera.Pos.X, camera.Pos.Y, camera.Rot)
 		definedCameras[camera.Name] = camera
 	}
 
-	// HeadMap
-	headYAML, err := getPrefix(path.Join(scenePath, "heads"))
-	if err != nil {
-		return nil, err
-	}
-	for _, yml := range headYAML {
-		head := &Head{
-			fearful: timed_reset.NewBool(),
-		}
-		err := yaml.Unmarshal(yml, &head)
-		if err != nil {
-			return nil, err
-		}
-
+	for _, head := range scene.Heads {
+		head.fearful = timed_reset.NewBool()
 		head.M = geom2.ToM(head.Pos.X, head.Pos.Y, head.Rot)
 		definedHeads[head.Name] = head
 	}
 
-	// Stands
-	standYAML, err := getPrefix(path.Join(scenePath, "stands"))
-	if err != nil {
-		return nil, err
-	}
-	for _, yml := range standYAML {
-		stand := &Stand{
-			Enabled:   true,
-			CameraMap: map[string]*Camera{},
-			HeadMap:   map[string]*Head{},
-		}
-		err := yaml.Unmarshal(yml, &stand)
-		if err != nil {
-			return nil, err
-		}
-
-		if stand.Disabled || !stand.Enabled {
-			continue
-		}
-
+	for _, stand := range scene.Stands {
+		// TODO: enabled/disabled
+		stand.CameraMap = map[string]*Camera{}
+		stand.HeadMap = map[string]*Head{}
 		stand.M = geom2.ToM(stand.Pos.X, stand.Pos.Y, stand.Rot)
 
 		for _, name := range stand.CameraNames {
@@ -319,8 +277,8 @@ func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
 			camera.Stand = stand
 			stand.CameraMap[camera.Name] = camera
 			stand.Cameras = append(stand.Cameras, camera)
-			scene.Cameras[camera.Name] = camera
-			scene.CameraList = append(scene.CameraList, camera)
+			scene.CameraMap[camera.Name] = camera
+			scene.Cameras = append(scene.Cameras, camera)
 		}
 
 		for _, name := range stand.HeadNames {
@@ -333,26 +291,9 @@ func BuildInstallation(scenePath, sceneName, textSet string) (*Scene, error) {
 			head.MInv = head.Stand.M.Mul(head.M).Inv() // hmmmm, we use Stand.M for MInv but not for head.M
 			stand.HeadMap[head.Name] = head
 			stand.Heads = append(stand.Heads, head)
-			scene.Heads[head.Name] = head
-			scene.HeadList = append(scene.HeadList, head)
+			scene.HeadMap[head.Name] = head
+			scene.Heads = append(scene.Heads, head)
 		}
-
-		scene.Stands = append(scene.Stands, stand)
-	}
-
-	// Anchors
-	anchorYAML, err := getPrefix(path.Join(scenePath, "anchors"))
-	if err != nil {
-		return nil, err
-	}
-	for _, yml := range anchorYAML {
-		anchor := &Anchor{}
-		err := yaml.Unmarshal(yml, &anchor)
-		if err != nil {
-			return nil, err
-		}
-
-		scene.Anchors = append(scene.Anchors, anchor)
 	}
 
 	if scene.CameraSensitivity == 0 {

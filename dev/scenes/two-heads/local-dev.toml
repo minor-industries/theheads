@@ -1,0 +1,40 @@
+Scale = 0
+Scenes = ['follow_convo', 'find_zeros']
+StartupScenes = ['find_zeros']
+CameraSensitivity = 0.2
+
+[[Stands]]
+CameraNames = ['camera-02']
+HeadNames = ['head-02']
+Name = 'stand-02'
+Rot = -90.0
+Pos = { X = -0.1, Y = -0.65 }
+
+[[Stands]]
+CameraNames = ['camera-01']
+HeadNames = ['head-01']
+Name = 'stand-01'
+Rot = -90.0
+Pos = { X = -1.25, Y = -0.65 }
+
+[[Heads]]
+Name = 'head-02'
+Rot = 0.0
+Virtual = false
+
+[[Heads]]
+Name = 'head-01'
+Rot = 0.0
+Virtual = false
+
+[[Cameras]]
+Fov = 64.33
+Name = 'camera-02'
+Rot = 0.0
+Pos = { X = 0.1, Y = 0.0 }
+
+[[Cameras]]
+Fov = 64.33
+Name = 'camera-01'
+Rot = 0.0
+Pos = { X = 0.1, Y = 0.0 }

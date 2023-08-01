@@ -19,7 +19,7 @@ func SceneSetup(
 
 	var wg sync.WaitGroup
 
-	for _, head := range sp.DJ.Scene.Heads {
+	for _, head := range sp.DJ.Scene.HeadMap {
 		wg.Add(1)
 		go func(head *scene.Head) {
 			sp.DJ.HeadManager.SetLedsAnimation(ctx, sp.Logger, head.LedsURI(), ledsAnimation, t)

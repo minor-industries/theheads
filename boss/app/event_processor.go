@@ -24,7 +24,7 @@ func (b *Boss) ProcessEvents() {
 }
 
 func (b *Boss) processMotion(msg *schema.MotionDetected) {
-	cam, ok := b.Scene.Cameras[msg.CameraName]
+	cam, ok := b.Scene.CameraMap[msg.CameraName]
 	if !ok {
 		rate_limiter.Debounce(
 			"detected motion from unknown camera: "+msg.CameraName,

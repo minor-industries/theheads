@@ -155,7 +155,7 @@ func (fps *focalPoints) maybeSpawnFocalPoint(p geom.Vec) {
 	cMaybeSpawnFocalPoint.Inc()
 	newFp := NewFocalPoint(p, fpRadius, "", DefaultTTL, DefaultTTLLast)
 
-	for _, cam := range fps.scene.Cameras {
+	for _, cam := range fps.scene.CameraMap {
 		fakeFp := NewFocalPoint(cam.M.Translation(), fpRadius, "", DefaultTTL, DefaultTTLLast)
 		if newFp.overlaps(fakeFp, 1.0) {
 			cNewFPOverlapsCamera.Inc()

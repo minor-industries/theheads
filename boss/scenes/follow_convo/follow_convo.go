@@ -36,7 +36,7 @@ func (f *FollowConvo) Run(sp *dj.SceneParams) {
 
 	scenes.SceneSetup(sp, "rainbow")
 
-	for _, head := range sp.DJ.Scene.Heads {
+	for _, head := range sp.DJ.Scene.HeadMap {
 		go scenes.Track(sp, head, "Seeker", scenes.TrackEvadeFocalPoint)
 		go scenes.EnableFaceDetection(sp, head)
 	}
@@ -84,7 +84,7 @@ func (f *FollowConvo) setup(dj *dj.DJ) {
 func (f *FollowConvo) selectHead(dj *dj.DJ) *scene.Head {
 	var pairs []FpHeadPair
 	// find the closest (focal point, head) pairs
-	for _, h := range dj.Scene.Heads {
+	for _, h := range dj.Scene.HeadMap {
 		if h.Fearful() {
 			continue // fearful heads don't normally speak
 		}
@@ -109,8 +109,8 @@ func (f *FollowConvo) selectHead(dj *dj.DJ) *scene.Head {
 	var choices []FpHeadPair
 
 	if len(pairs) == 0 {
-		i := rand.Intn(len(dj.Scene.HeadList))
-		return dj.Scene.HeadList[i]
+		i := rand.Intn(len(dj.Scene.Heads))
+		return dj.Scene.Heads[i]
 	}
 
 	// Choose a random head to speak with some bias
@@ -171,7 +171,7 @@ func fearfulInterrupt(
 ) func() bool {
 	return func() bool {
 		count := 0
-		for _, head := range sc.DJ.Scene.Heads {
+		for _, head := range sc.DJ.Scene.HeadMap {
 			if head.Fearful() {
 				count++
 			}

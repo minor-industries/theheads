@@ -14,7 +14,7 @@ func CameraRestarter(sp *dj.SceneParams) {
 		if len(sp.DJ.Grid.GetFocalPoints().FocalPoints) == 0 {
 			return
 		}
-		for _, c := range sp.DJ.Scene.Cameras {
+		for _, c := range sp.DJ.Scene.CameraMap {
 			go func(camera *scene.Camera) {
 				sp.Logger.Info("restarting camera", zap.String("camera", camera.Name))
 

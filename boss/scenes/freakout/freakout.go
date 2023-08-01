@@ -19,7 +19,7 @@ func Freakout(sp *dj.SceneParams) {
 
 	scenes.SceneSetup(sp, "highred")
 
-	for _, head := range sp.DJ.Scene.Heads {
+	for _, head := range sp.DJ.Scene.HeadMap {
 		go scenes.Track(sp, head, "Jitter", scenes.TrackClosestFocalPoint)
 	}
 
@@ -32,7 +32,7 @@ func Freakout(sp *dj.SceneParams) {
 
 func yell(sp *dj.SceneParams) {
 	var wg sync.WaitGroup
-	for _, head := range sp.DJ.Scene.Heads {
+	for _, head := range sp.DJ.Scene.HeadMap {
 		wg.Add(1)
 		go headYell(sp, &wg, head)
 	}

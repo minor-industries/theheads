@@ -25,7 +25,7 @@ func setupFloodLight(
 }
 
 func setupFloodLights(sp *dj.SceneParams) {
-	for _, c := range sp.DJ.Scene.Cameras {
+	for _, c := range sp.DJ.Scene.CameraMap {
 		cameraURI := c.URI()
 		newSp := sp.WithLogger(sp.Logger.With(zap.String("camera", cameraURI)))
 		go setupFloodLight(newSp, cameraURI, sp.DJ.FloodlightController())
@@ -33,7 +33,7 @@ func setupFloodLights(sp *dj.SceneParams) {
 }
 
 func setVolume(sp *dj.SceneParams) {
-	for _, h := range sp.DJ.Scene.Heads {
+	for _, h := range sp.DJ.Scene.HeadMap {
 		uri := h.URI()
 		logger := sp.Logger.With(zap.String("uri", uri))
 		go sp.DJ.HeadManager.SetVolume(

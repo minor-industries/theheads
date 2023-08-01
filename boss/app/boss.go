@@ -46,7 +46,7 @@ func (b *Boss) SetupMetrics() {
 		Name:      "fearful_heads",
 	}, func() float64 {
 		result := 0.0
-		for _, head := range b.Scene.Heads {
+		for _, head := range b.Scene.HeadMap {
 			if head.Fearful() {
 				result += 1.0
 			}
@@ -58,7 +58,7 @@ func (b *Boss) SetupMetrics() {
 func (b *Boss) processHeartbeat(msg *schema.Heartbeat) {
 	switch msg.Component {
 	case "head":
-		head := b.Scene.Heads[msg.Instance]
+		head := b.Scene.HeadMap[msg.Instance]
 		if err := b.HeadManager.AckHeartbeat(head.URI(), msg.ID); err != nil {
 			b.Logger.Warn("failed to ack heartbeat", zap.Error(err))
 			return

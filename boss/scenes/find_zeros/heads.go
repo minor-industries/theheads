@@ -68,7 +68,7 @@ func findHeadZero(
 func findHeadZeros(sp *dj.SceneParams) {
 	ws := &sync.WaitGroup{}
 
-	for _, h := range sp.DJ.Scene.Heads {
+	for _, h := range sp.DJ.Scene.HeadMap {
 		ws.Add(1)
 		newSp := sp.WithLogger(sp.Logger.With(zap.String("head", h.URI())))
 		go setupHead(newSp, ws, h)
