@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const retryDelay = 3 * time.Second
+
 func run(logger *zap.Logger) error {
 	args := os.Args[1:]
 
@@ -49,8 +51,8 @@ func runComponent(
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
-					fmt.Printf("Panic occurred: %v. Retrying...\n", r)
-					const retryDelay = 3 * time.Second
+					err, _ := r.(error)
+					logger.Error("panic", zap.Error(err))
 					time.Sleep(retryDelay)
 				}
 			}()
