@@ -218,7 +218,7 @@ func fastboss(rule string) {
 	grm.Run([]string{"GOOS=linux", "GOARCH=arm64"},
 		"go", "build", "-o", "bin/boss-arm64", "./cmd/boss",
 	)
-	grm.Run(nil, "rsync", "-z", "--progress", "bin/boss-arm64", "head04.vpn:")
+	grm.Run(nil, "rsync", "-z", "--progress", "bin/boss-arm64", "base01:")
 }
 
 func fastheadscli(rule string) {

@@ -53,7 +53,11 @@ func Run(env *cfg.Cfg, discovery discovery.Discovery) {
 	boss.Broker = broker.NewBroker()
 	go boss.Broker.Start()
 
-	boss.Scene, err = scene.BuildInstallation(env.ScenePath, env.SceneName, env.TextSet)
+	boss.Scene, err = scene.BuildInstallation(
+		os.ExpandEnv(env.ScenePath),
+		env.SceneName,
+		env.TextSet,
+	)
 	if err != nil {
 		panic(err)
 	}
