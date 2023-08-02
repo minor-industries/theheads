@@ -12,6 +12,7 @@ type Cfg struct {
 	DetectFaces        bool
 	DrawFrame          string
 	DrawMotion         bool
+	InitFFEarly        bool
 	FOV                float64
 	FloodlightPin      int // 17 for heads
 	Framerate          int

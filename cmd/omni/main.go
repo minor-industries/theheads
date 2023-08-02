@@ -52,6 +52,8 @@ func runComponent(
 			defer func() {
 				if r := recover(); r != nil {
 					err, _ := r.(error)
+					// maybe best not to retry? because the process may have
+					// spawned other goroutines, etc.
 					logger.Error("panic", zap.Error(err))
 					time.Sleep(retryDelay)
 				}

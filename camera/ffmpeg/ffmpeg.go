@@ -9,7 +9,6 @@ import (
 	"gocv.io/x/gocv"
 	"io"
 	"sync"
-	"sync/atomic"
 	"time"
 )
 
@@ -31,7 +30,6 @@ type Ffmpeg struct {
 	stdout io.Reader
 
 	frame          chan []byte
-	initialized    uint32
 	gDroppedFrames prometheus.Counter
 	registry       prometheus.Registerer
 }
@@ -54,24 +52,24 @@ func NewFfmpeg(
 	return result
 }
 
-func (ff *Ffmpeg) Ffmpeg(
-	src *gocv.Mat,
-) {
+func (ff *Ffmpeg) InitOnce(height, width int) {
 	ff.once.Do(func() {
-		size := src.Size()
-		height := size[0]
-		width := size[1]
-
 		ff.logger.Info("spawning ffmpeg", zap.Int("width", width), zap.Int("height", height))
 		ff.stdin, ff.stdout = ff.spawnFfmpeg(width, height)
 		go ff.feeder()
 		go ff.publisher()
-
-		atomic.StoreUint32(&ff.initialized, 1)
 	})
+}
 
-	if !ff.HasWatchers() {
-		return
+func (ff *Ffmpeg) Ffmpeg(
+	src *gocv.Mat,
+) {
+	if ff.HasWatchers() || ff.env.InitFFEarly {
+		size := src.Size()
+		height := size[0]
+		width := size[1]
+
+		ff.InitOnce(height, width)
 	}
 
 	matBytes := src.ToBytes()
@@ -108,5 +106,5 @@ func (ff *Ffmpeg) publisher() {
 }
 
 func (ff *Ffmpeg) HasWatchers() bool {
-	return ff.broker.SubCount() > 0 || atomic.LoadUint32(&ff.initialized) == 0
+	return ff.broker.SubCount() > 0
 }

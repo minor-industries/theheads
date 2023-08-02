@@ -197,7 +197,7 @@ func noError(err error) {
 func fastcamera64(rule string) {
 	grm.Docker("camera-arm64")
 	copyCameraARM64("camera-arm64")
-	grm.Run(nil, "rsync", "-z", "--progress", "bin/camera-arm64", "camera@dev01:camera")
+	grm.Run(nil, "rsync", "-z", "--progress", "bin/camera-arm64", "camera@head01-inet:camera")
 }
 
 func fastcamera(rule string) {
