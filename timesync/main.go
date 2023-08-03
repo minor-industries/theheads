@@ -11,7 +11,6 @@ import (
 	"github.com/cacktopus/theheads/timesync/server"
 	"github.com/cacktopus/theheads/timesync/sync"
 	"github.com/coreos/go-systemd/daemon"
-	"github.com/vrischmann/envconfig"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"time"
@@ -105,22 +104,11 @@ func readRTCTime(rtc *ds3231.Device, logger *zap.Logger) bool {
 	return correct
 }
 
-func Run(discover discovery.Discovery) {
-	logConfig := zap.NewProductionConfig()
-	logConfig.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
-
-	logger, err := logConfig.Build()
-	if err != nil {
-		panic(err)
-	}
-	logger.Debug("starting")
-
-	env := &cfg.Config{}
-	err = envconfig.Init(env)
-	if err != nil {
-		panic(err)
-	}
-
+func Run(
+	logger *zap.Logger,
+	env *cfg.Config,
+	discover discovery.Discovery,
+) {
 	rtClock, err := rtc.SetupI2C()
 	if err != nil {
 		logger.Warn("error setting up i2c", zap.Error(err))

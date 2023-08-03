@@ -5,13 +5,18 @@ import (
 	"github.com/cacktopus/theheads/common/discovery"
 	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/timesync"
+	"github.com/cacktopus/theheads/timesync/cfg"
+	"github.com/cacktopus/theheads/web"
+	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"os"
+	"path/filepath"
 	"time"
 )
 
 const retryDelay = 3 * time.Second
+const configHome = "/etc/env"
 
 func run(logger *zap.Logger) error {
 	args := os.Args[1:]
@@ -25,11 +30,17 @@ func run(logger *zap.Logger) error {
 	for _, arg := range args {
 		switch arg {
 		case "timesync":
+			env := cfg.Defaults
+			if err := loadConfig(arg, &env); err != nil {
+				return errors.Wrap(err, "load config")
+			}
 			go runComponent(logger, arg, func() error {
-				// TODO: want to pass logger here (with "component"), but
-				// have to deal with debug flag (timesync changes it)
-				timesync.Run(discovery.NewSerf("127.0.0.1:7373"))
+				timesync.Run(logger, &env, discovery.NewSerf("127.0.0.1:7373"))
 				return nil
+			})
+		case "web":
+			go runComponent(logger, arg, func() error {
+				return web.Run(discovery.NewSerf("127.0.0.1:7373"))
 			})
 		default:
 			return fmt.Errorf("unknown component: %s", arg)
@@ -64,6 +75,19 @@ func runComponent(
 			}
 		}()
 	}
+}
+
+func loadConfig(component string, cfg any) error {
+	cfgFile := filepath.Join(configHome, component+".toml")
+	content, err := os.ReadFile(cfgFile)
+	if err != nil {
+		return errors.Wrap(err, "readfile")
+	}
+	err = toml.Unmarshal(content, cfg)
+	if err != nil {
+		return errors.Wrap(err, "unmarshal config")
+	}
+	return nil
 }
 
 func main() {
