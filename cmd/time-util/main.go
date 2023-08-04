@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	util2 "github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/timesync/rtc"
 	"github.com/cacktopus/theheads/timesync/rtc/ds3231"
@@ -65,7 +64,7 @@ func show(logger *zap.Logger, hwClock *ds3231.Device) error {
 		return errors.Wrap(err, "read time")
 	}
 
-	fmt.Println(t.String())
+	logger.Info("time", zap.String("t", t.String()))
 	return nil
 }
 
