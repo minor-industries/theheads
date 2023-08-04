@@ -10,43 +10,43 @@ import (
 
 var rules = map[string]func(rule string){
 	//"bin/boss":            bin,
-	"bin/camera":          grm.Bin,
-	"bin/head":            grm.Bin,
-	"bin/heads-cli":       grm.Bin,
-	"bin/leds":            grm.Bin,
-	"bin/lowred":          grm.Bin,
-	"bin/set-system-time": grm.Bin,
-	"bin/solar":           grm.Bin,
-	"bin/timesync":        grm.Bin,
-	"bin/web":             grm.Bin,
+	"bin/camera":    grm.Bin,
+	"bin/head":      grm.Bin,
+	"bin/heads-cli": grm.Bin,
+	"bin/leds":      grm.Bin,
+	"bin/lowred":    grm.Bin,
+	"bin/time-util": grm.Bin,
+	"bin/solar":     grm.Bin,
+	"bin/timesync":  grm.Bin,
+	"bin/web":       grm.Bin,
 
-	"boss-arm64":            grm.Steps(bossFrontend, grm.Pkg),
-	"heads-cli-arm64":       grm.Pkg,
-	"head-arm64":            grm.Pkg,
-	"set-system-time-arm64": grm.Pkg,
-	"solar-arm64":           grm.Pkg,
-	"timesync-arm64":        grm.Pkg,
-	"web-arm64":             grm.Pkg,
-	"lowred-arm64":          grm.Docker,
-	"leds-arm64":            grm.Docker,
-	"camera-arm64":          grm.Docker,
-	"shellystats-arm64":     grm.Pkg,
-	"carrier-arm64":         grm.Pkg,
+	"boss-arm64":        grm.Steps(bossFrontend, grm.Pkg),
+	"heads-cli-arm64":   grm.Pkg,
+	"head-arm64":        grm.Pkg,
+	"time-util-arm64":   grm.Pkg,
+	"solar-arm64":       grm.Pkg,
+	"timesync-arm64":    grm.Pkg,
+	"web-arm64":         grm.Pkg,
+	"lowred-arm64":      grm.Docker,
+	"leds-arm64":        grm.Docker,
+	"camera-arm64":      grm.Docker,
+	"shellystats-arm64": grm.Pkg,
+	"carrier-arm64":     grm.Pkg,
 
-	"head-armhf":            grm.Pkg,
-	"heads-cli-armhf":       grm.Pkg,
-	"set-system-time-armhf": grm.Pkg,
-	"timesync-armhf":        grm.Pkg,
-	"web-armhf":             grm.Pkg,
-	"camera-armhf":          grm.Docker,
-	"leds-armhf":            grm.Docker,
-	"lowred-armhf":          grm.Docker,
+	"head-armhf":      grm.Pkg,
+	"heads-cli-armhf": grm.Pkg,
+	"time-util-armhf": grm.Pkg,
+	"timesync-armhf":  grm.Pkg,
+	"web-armhf":       grm.Pkg,
+	"camera-armhf":    grm.Docker,
+	"leds-armhf":      grm.Docker,
+	"lowred-armhf":    grm.Docker,
 
-	"heads-cli-armv6":       grm.Pkg,
-	"set-system-time-armv6": grm.Pkg,
-	"timesync-armv6":        grm.Pkg,
-	"web-armv6":             grm.Pkg,
-	"lowred-armv6":          grm.Docker,
+	"heads-cli-armv6": grm.Pkg,
+	"time-util-armv6": grm.Pkg,
+	"timesync-armv6":  grm.Pkg,
+	"web-armv6":       grm.Pkg,
+	"lowred-armv6":    grm.Docker,
 
 	"pibuild-all": func(_ string) {
 		var err error
@@ -61,7 +61,7 @@ var rules = map[string]func(rule string){
 		grm.Pkg("heads-cli-armhf")
 		//grm.Pkg("leds-armhf")
 		//grm.Pkg("lowred-armhf")
-		grm.Pkg("set-system-time-armhf")
+		grm.Pkg("time-util-armhf")
 		grm.Pkg("timesync-armhf")
 		grm.Pkg("web-armhf")
 
@@ -69,7 +69,7 @@ var rules = map[string]func(rule string){
 
 		grm.Pkg("boss-arm64")
 		grm.Pkg("heads-cli-arm64")
-		grm.Pkg("set-system-time-arm64")
+		grm.Pkg("time-util-arm64")
 		grm.Pkg("solar-arm64")
 		grm.Pkg("timesync-arm64")
 		grm.Pkg("web-arm64")
