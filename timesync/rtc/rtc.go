@@ -14,7 +14,7 @@ func SetupI2C() (*ds3231.Device, error) {
 	}
 
 	// Use i2creg I2C bus registry to find the first available I2C bus.
-	bus, err := i2creg.Open("")
+	bus, err := i2creg.Open("1")
 	if err != nil {
 		return nil, errors.Wrap(err, "open")
 	}
