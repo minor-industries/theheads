@@ -7,6 +7,7 @@ import (
 	"github.com/cacktopus/theheads/timesync"
 	"github.com/cacktopus/theheads/timesync/cfg"
 	"github.com/cacktopus/theheads/web"
+	"github.com/minor-industries/codelab/power-monitor"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -41,6 +42,10 @@ func run(logger *zap.Logger) error {
 		case "web":
 			go runComponent(logger, arg, func() error {
 				return web.Run(discovery.NewSerf("127.0.0.1:7373"))
+			})
+		case "power-monitor":
+			go runComponent(logger, arg, func() error {
+				return power_monitor.Run(logger)
 			})
 		default:
 			return fmt.Errorf("unknown component: %s", arg)

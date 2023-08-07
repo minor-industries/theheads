@@ -4,6 +4,8 @@ go 1.19
 
 replace github.com/minor-industries/platform => ../minor-industries/platform
 
+replace github.com/minor-industries/codelab => ../minor-industries/codelab
+
 require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
@@ -17,12 +19,14 @@ require (
 	github.com/hashicorp/serf v0.10.1
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/larspensjo/Go-simplex-noise v0.0.0-20121005164837-bfdcb9fc4b93
+	github.com/minor-industries/codelab v0.0.0-00010101000000-000000000000
 	github.com/minor-industries/grm v0.0.1
 	github.com/minor-industries/platform v0.0.2
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/montanaflynn/stats v0.6.6
+	github.com/montanaflynn/stats v0.7.1
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/ory/dockertest/v3 v3.9.1
+	github.com/pelletier/go-toml/v2 v2.0.8
 	github.com/pin/tftp v2.1.0+incompatible
 	github.com/pixiv/go-libjpeg v0.0.0-20190822045933-3da21a74767d
 	github.com/pkg/errors v0.9.1
@@ -40,18 +44,17 @@ require (
 	gocv.io/x/gocv v0.31.0
 	golang.org/x/crypto v0.9.0
 	gonum.org/v1/gonum v0.13.0
-	gonum.org/v1/plot v0.10.1
+	gonum.org/v1/plot v0.13.0
 	google.golang.org/grpc v1.56.0
 	google.golang.org/protobuf v1.30.0
-	gopkg.in/yaml.v2 v2.4.0
 	periph.io/x/conn/v3 v3.7.0
-	periph.io/x/devices/v3 v3.7.0
-	periph.io/x/host/v3 v3.8.0
+	periph.io/x/devices/v3 v3.7.1
+	periph.io/x/host/v3 v3.8.2
 )
 
 require (
 	aead.dev/minisign v0.2.0 // indirect
-	git.sr.ht/~sbinet/gg v0.3.1 // indirect
+	git.sr.ht/~sbinet/gg v0.4.1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
@@ -69,9 +72,9 @@ require (
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-fonts/liberation v0.3.0 // indirect
+	github.com/go-fonts/liberation v0.3.1 // indirect
 	github.com/go-latex/latex v0.0.0-20230307184459-12ec69307ad9 // indirect
-	github.com/go-pdf/fpdf v0.6.0 // indirect
+	github.com/go-pdf/fpdf v0.8.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
@@ -103,7 +106,6 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/opencontainers/runc v1.1.2 // indirect
-	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
@@ -119,12 +121,13 @@ require (
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/image v0.6.0 // indirect
+	golang.org/x/image v0.7.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/sys v0.9.0 // indirect
 	golang.org/x/term v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	periph.io/x/periph v3.6.2+incompatible // indirect
 )
