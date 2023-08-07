@@ -208,7 +208,7 @@ func processValues(
 		zap.String("old_time", time.Now().UTC().String()),
 		zap.Duration("elapsed", time.Now().Sub(startTime)),
 	)
-	if err := util.SetTime(max); err != nil {
+	if err := util.SetSystemTime(max); err != nil {
 		return errors.Wrap(err, "setting time")
 	}
 

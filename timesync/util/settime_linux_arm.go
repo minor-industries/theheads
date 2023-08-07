@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func SetTime(time time.Time) error {
+func SetSystemTime(time time.Time) error {
 	tv := syscall.Timeval{
 		Sec:  int32(time.Unix()),
 		Usec: int32(time.Nanosecond() / 1e3),

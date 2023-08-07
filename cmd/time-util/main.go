@@ -1,41 +1,57 @@
 package main
 
 import (
+	"fmt"
 	util2 "github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/timesync/rtc"
-	"github.com/cacktopus/theheads/timesync/rtc/ds3231"
 	"github.com/cacktopus/theheads/timesync/util"
 	"github.com/jessevdk/go-flags"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"os"
+	"time"
 )
 
-var opts = struct {
-	Show struct {
-	} `command:"show"`
+const timeFmt = "2006-01-02 15:04:05"
 
-	SetSystem struct {
-	} `command:"set-system"`
-}{}
+type Opts struct {
+	T string `short:"t" description:"time to use (in UTC). fmt: 2006-01-02 15:04:05"`
+
+	Show      struct{} `command:"show"`
+	SetSystem struct{} `command:"set-system"`
+	SetRTC    struct{} `command:"set-rtc"`
+}
+
+func (o *Opts) GetTime() (time.Time, error) {
+	t, err := time.Parse(timeFmt, o.T)
+
+	if err != nil {
+		return time.Time{}, errors.Wrap(err, "parse time")
+	}
+	return t, nil
+}
+
+func (o *Opts) HasTime() bool {
+	return o.T != ""
+}
 
 func run(logger *zap.Logger) error {
-	parser := flags.NewParser(&opts, flags.Default)
+	opts := &Opts{}
+
+	parser := flags.NewParser(opts, flags.Default)
 	_, err := parser.ParseArgs(os.Args[1:])
 	if err != nil {
 		return errors.Wrap(err, "parse")
 	}
 
-	hwClock, err := rtc.SetupI2C()
-	if err != nil {
-		return errors.Wrap(err, "setup i2c")
-	}
-
 	switch parser.Active.Name {
 	case "show":
-		return show(logger, hwClock)
+		return show(logger)
 	case "set-system":
-		return setSystemTime(logger, hwClock)
+		fmt.Println(opts)
+		return setSystemTime(logger, opts)
+	case "set-rtc":
+		return setHWClock(logger, opts)
 	default:
 		panic("invalid command")
 	}
@@ -43,14 +59,56 @@ func run(logger *zap.Logger) error {
 	return nil
 }
 
-func setSystemTime(logger *zap.Logger, hwClock *ds3231.Device) error {
-	t, err := hwClock.ReadTime()
+func setHWClock(logger *zap.Logger, opts *Opts) error {
+	var t time.Time
+	if opts.HasTime() {
+		var err error
+		t, err = opts.GetTime()
+		if err != nil {
+			return errors.Wrap(err, "get time from options")
+		}
+	} else {
+		t = time.Now()
+	}
+
+	clock, err := rtc.SetupI2C()
 	if err != nil {
-		return errors.Wrap(err, "read time")
+		return errors.Wrap(err, "setup i2c")
+	}
+
+	t = t.In(time.UTC)
+
+	logger.Info("setting rtc clock", zap.String("t", t.String()))
+	if err := clock.SetTime(t); err != nil {
+		return errors.Wrap(err, "set rtc time")
+	}
+
+	return nil
+}
+
+func setSystemTime(logger *zap.Logger, opts *Opts) error {
+	var t time.Time
+	fmt.Println(opts)
+	if opts.HasTime() {
+		var err error
+		t, err = opts.GetTime()
+		if err != nil {
+			return errors.Wrap(err, "get time from options")
+		}
+	} else {
+		clock, err := rtc.SetupI2C()
+		if err != nil {
+			return errors.Wrap(err, "setup i2c")
+		}
+
+		t, err = clock.ReadTime()
+		if err != nil {
+			return errors.Wrap(err, "read time")
+		}
 	}
 
 	logger.Info("setting system time", zap.String("t", t.String()))
-	err = util.SetTime(t)
+	err := util.SetSystemTime(t)
 	if err != nil {
 		return errors.Wrap(err, "set time")
 	}
@@ -58,7 +116,12 @@ func setSystemTime(logger *zap.Logger, hwClock *ds3231.Device) error {
 	return nil
 }
 
-func show(logger *zap.Logger, hwClock *ds3231.Device) error {
+func show(logger *zap.Logger) error {
+	hwClock, err := rtc.SetupI2C()
+	if err != nil {
+		return errors.Wrap(err, "setup i2c")
+	}
+
 	t, err := hwClock.ReadTime()
 	if err != nil {
 		return errors.Wrap(err, "read time")
