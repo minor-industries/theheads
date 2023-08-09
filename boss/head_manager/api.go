@@ -2,7 +2,7 @@ package head_manager
 
 import (
 	"context"
-	"github.com/cacktopus/theheads/gen/go/heads"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/durationpb"

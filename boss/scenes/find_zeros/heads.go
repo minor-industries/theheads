@@ -4,7 +4,7 @@ import (
 	"github.com/cacktopus/theheads/boss/dj"
 	"github.com/cacktopus/theheads/boss/head_manager"
 	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/gen/go/heads"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"go.uber.org/zap"
 	"sync"
 	"time"

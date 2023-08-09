@@ -2,7 +2,7 @@ package camera
 
 import (
 	"context"
-	gen "github.com/cacktopus/theheads/gen/go/heads"
+	gen "github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"io"
 	"os"

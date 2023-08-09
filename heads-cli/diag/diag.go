@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	heads2 "github.com/cacktopus/theheads/gen/go/heads"
+	heads2 "github.com/minor-industries/protobuf/gen/go/heads"
 	"google.golang.org/grpc"
 	"strings"
 	"time"

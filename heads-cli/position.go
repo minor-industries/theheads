@@ -3,7 +3,7 @@ package heads_cli
 import (
 	"context"
 	"fmt"
-	heads2 "github.com/cacktopus/theheads/gen/go/heads"
+	heads2 "github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ory/dockertest/v3"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
@@ -89,7 +90,7 @@ func main() {
 	if false {
 		services.Register("web", "web01", 80)
 		go func() {
-			err := web.Run(services)
+			err := web.Run(services, prometheus.NewRegistry())
 			if err != nil {
 				panic(err)
 			}

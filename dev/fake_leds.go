@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/cacktopus/theheads/common/standard_server"
-	"github.com/cacktopus/theheads/gen/go/heads"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

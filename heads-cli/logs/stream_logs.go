@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/gen/go/heads"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

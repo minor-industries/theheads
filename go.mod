@@ -6,6 +6,8 @@ replace github.com/minor-industries/platform => ../minor-industries/platform
 
 replace github.com/minor-industries/codelab => ../minor-industries/codelab
 
+replace github.com/minor-industries/protobuf => ../minor-industries/protobuf
+
 require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
@@ -22,6 +24,7 @@ require (
 	github.com/minor-industries/codelab v0.0.0-00010101000000-000000000000
 	github.com/minor-industries/grm v0.0.1
 	github.com/minor-industries/platform v0.0.2
+	github.com/minor-industries/protobuf v0.0.0-00010101000000-000000000000
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/orcaman/concurrent-map/v2 v2.0.1
@@ -45,8 +48,8 @@ require (
 	golang.org/x/crypto v0.9.0
 	gonum.org/v1/gonum v0.13.0
 	gonum.org/v1/plot v0.13.0
-	google.golang.org/grpc v1.56.0
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/grpc v1.57.0
+	google.golang.org/protobuf v1.31.0
 	periph.io/x/conn/v3 v3.7.0
 	periph.io/x/devices/v3 v3.7.1
 	periph.io/x/host/v3 v3.8.2
@@ -126,7 +129,7 @@ require (
 	golang.org/x/sys v0.9.0 // indirect
 	golang.org/x/term v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
-	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230525234030-28d5490b6b19 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	periph.io/x/periph v3.6.2+incompatible // indirect

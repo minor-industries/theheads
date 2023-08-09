@@ -2,7 +2,7 @@ package find_zeros
 
 import (
 	"github.com/cacktopus/theheads/boss/dj"
-	gen "github.com/cacktopus/theheads/gen/go/heads"
+	gen "github.com/minor-industries/protobuf/gen/go/heads"
 	"go.uber.org/zap"
 )
 

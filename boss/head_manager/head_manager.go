@@ -7,7 +7,7 @@ import (
 	"github.com/cacktopus/theheads/boss/services"
 	"github.com/cacktopus/theheads/common/discovery"
 	"github.com/cacktopus/theheads/common/metrics"
-	"github.com/cacktopus/theheads/gen/go/heads"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"

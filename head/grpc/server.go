@@ -3,7 +3,6 @@ package grpc
 import (
 	"context"
 	"encoding/json"
-	"github.com/cacktopus/theheads/gen/go/heads"
 	"github.com/cacktopus/theheads/head/log_limiter"
 	"github.com/cacktopus/theheads/head/motor"
 	"github.com/cacktopus/theheads/head/motor/jitter"
@@ -12,6 +11,7 @@ import (
 	"github.com/cacktopus/theheads/head/sensor"
 	"github.com/cacktopus/theheads/head/sensor/magnetometer"
 	zero_detector2 "github.com/cacktopus/theheads/head/sensor/magnetometer/zero_detector"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

@@ -7,6 +7,7 @@ import (
 	"github.com/cacktopus/theheads/timesync"
 	"github.com/cacktopus/theheads/timesync/cfg"
 	"github.com/cacktopus/theheads/web"
+	"github.com/minor-industries/codelab/logstream"
 	"github.com/minor-industries/codelab/power-monitor"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
@@ -58,6 +59,14 @@ func run(logger *zap.Logger) error {
 					logger,
 					prometheus.NewRegistry(),
 				)
+			})
+		case "logstream":
+			go runComponent(logger, arg, func() error {
+				logstream.Run(
+					logger,
+					prometheus.NewRegistry(),
+				)
+				return nil
 			})
 		default:
 			return fmt.Errorf("unknown component: %s", arg)

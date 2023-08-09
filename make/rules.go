@@ -162,7 +162,7 @@ var rules = map[string]func(rule string){
 			// this may run into trouble if there are two proto files with the same name in
 			// different directories
 			base := filepath.Base(file)
-			opt := fmt.Sprintf("--go_opt=M%s=github.com/cacktopus/theheads/gen/go/heads", base)
+			opt := fmt.Sprintf("--go_opt=M%s=github.com/minor-industries/protobuf/gen/go/heads", base)
 			args = append(args, opt)
 		}
 

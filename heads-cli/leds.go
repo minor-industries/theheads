@@ -3,9 +3,9 @@ package heads_cli
 import (
 	"context"
 	"fmt"
-	"github.com/cacktopus/theheads/gen/go/heads"
 	"github.com/cacktopus/theheads/heads-cli/lib"
 	"github.com/hashicorp/serf/client"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )

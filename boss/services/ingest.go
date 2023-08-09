@@ -7,7 +7,7 @@ import (
 	"github.com/cacktopus/theheads/common/broker"
 	"github.com/cacktopus/theheads/common/discovery"
 	"github.com/cacktopus/theheads/common/schema"
-	"github.com/cacktopus/theheads/gen/go/heads"
+	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

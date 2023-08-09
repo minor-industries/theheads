@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	gen "github.com/cacktopus/theheads/gen/go/heads"
+	gen "github.com/minor-industries/protobuf/gen/go/heads"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )
