@@ -41,6 +41,7 @@ func run(logger *zap.Logger) error {
 					logger,
 					&env,
 					discovery.NewSerf("127.0.0.1:7373"),
+					prometheus.NewRegistry(),
 				)
 				return nil
 			})

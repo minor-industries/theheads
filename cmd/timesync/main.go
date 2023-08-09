@@ -17,5 +17,5 @@ func main() {
 		panic(err)
 	}
 
-	timesync.Run(logger, &env, discovery.NewSerf("127.0.0.1:7373"))
+	timesync.Run(logger, &env, discovery.NewSerf("127.0.0.1:7373"), nil)
 }

@@ -32,9 +32,9 @@ func Test_sync(t *testing.T) {
 		MinSources: 1,
 	}
 
-	go run(logger, c1, services)
-	go run(logger, c2, services)
-	go run(logger, c3, services)
+	go run(logger, c1, services, nil)
+	go run(logger, c2, services, nil)
+	go run(logger, c3, services, nil)
 
 	time.Sleep(200 * time.Millisecond)
 

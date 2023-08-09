@@ -10,13 +10,22 @@ import (
 	"github.com/cacktopus/theheads/timesync/rtc/ds3231"
 	"github.com/cacktopus/theheads/timesync/server"
 	"github.com/cacktopus/theheads/timesync/sync"
+	"github.com/cacktopus/theheads/timesync/util"
 	"github.com/coreos/go-systemd/daemon"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"time"
 )
 
-func run(logger *zap.Logger, env *cfg.Config, discovery discovery.Discovery) {
+func run(
+	logger *zap.Logger,
+	env *cfg.Config,
+	discovery discovery.Discovery,
+	registry *prometheus.Registry,
+) {
+	setupMetrics(registry)
+
 	if env.MinSources < 1 {
 		panic("MIN_SOURCES must be greater than zero")
 	}
@@ -62,6 +71,7 @@ func run(logger *zap.Logger, env *cfg.Config, discovery discovery.Discovery) {
 			gen.RegisterTimeServer(grpcServer, h)
 			return nil
 		},
+		Registry: registry,
 	})
 	if err != nil {
 		panic(err)
@@ -71,6 +81,14 @@ func run(logger *zap.Logger, env *cfg.Config, discovery discovery.Discovery) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func setupMetrics(registry *prometheus.Registry) {
+	registry.MustRegister(prometheus.NewGaugeFunc(prometheus.GaugeOpts{
+		Namespace: "heads",
+		Subsystem: "timesync",
+		Name:      "current_timestamp",
+	}, util.Now))
 }
 
 func readRTCTime(rtc *ds3231.Device, logger *zap.Logger) bool {
@@ -108,6 +126,7 @@ func Run(
 	logger *zap.Logger,
 	env *cfg.Config,
 	discover discovery.Discovery,
+	registry *prometheus.Registry,
 ) {
 	rtClock, err := rtc.SetupI2C()
 	if err != nil {
@@ -119,5 +138,5 @@ func Run(
 		logger = logger.WithOptions(zap.IncreaseLevel(zap.InfoLevel))
 	}
 
-	run(logger, env, discover)
+	run(logger, env, discover, registry)
 }
