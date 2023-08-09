@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/cacktopus/theheads/common/broker"
 	"github.com/cacktopus/theheads/common/standard_server"
+	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/gen/go/heads"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
@@ -22,12 +23,6 @@ import (
 )
 
 func (app *App) setup() {
-	var err error
-	app.strip, err = NewStrip(app)
-	if err != nil {
-		panic(err)
-	}
-
 	prometheus.MustRegister(prometheus.NewGaugeFunc(prometheus.GaugeOpts{
 		Namespace: "heads",
 		Subsystem: "leds",
@@ -37,7 +32,7 @@ func (app *App) setup() {
 	}))
 
 	// reset
-	err = app.strip.send2()
+	err := app.strip.send2()
 	if err != nil {
 		panic(err)
 	}
@@ -185,6 +180,7 @@ func Run(logger *zap.Logger) error {
 	app := &App{
 		logger:           logger,
 		currentAnimation: atomic.NewString(""),
+		broker:           broker.NewBroker(),
 	}
 
 	app.env = &config{}
@@ -201,6 +197,20 @@ func Run(logger *zap.Logger) error {
 
 	app.loadSettings(settings)
 
+	app.strip, err = NewStrip(app)
+	if err != nil {
+		panic(err)
+	}
+
+	go app.broker.Start()
+
+	app.setup()
+
+	err = util.DropRoot(logger, "leds")
+	if err != nil {
+		return errors.Wrap(err, "drop root")
+	}
+
 	if app.env.EnableIR {
 		go func() {
 			for i := 1; i <= 60; i++ {
@@ -210,11 +220,6 @@ func Run(logger *zap.Logger) error {
 			}
 		}()
 	}
-
-	app.broker = broker.NewBroker()
-	go app.broker.Start()
-
-	app.setup()
 
 	rb1 := rainbow1(app, &faderConfig{
 		timeScale: 0.3,

@@ -229,9 +229,9 @@ func fastheadscli(rule string) {
 }
 
 func fastleds(rule string) {
-	grm.Docker("leds-armhf")
-	copyLeds("leds-armhf")
-	grm.Run(nil, "rsync", "-z", "--progress", "bin/leds-armhf", "pi@dev01:")
+	grm.Docker("leds-arm64")
+	copyLeds("leds-arm64")
+	grm.Run(nil, "rsync", "-z", "--progress", "bin/leds-arm64", "pi@head01-j:")
 }
 
 func copyCamera(rule string) {
@@ -251,11 +251,11 @@ func copyCameraARM64(rule string) {
 }
 
 func copyLeds(rule string) {
-	if !strings.Contains(rule, "armhf") {
+	if !strings.Contains(rule, "arm64") {
 		panic("not yet")
 	}
 
-	grm.DockerCopy("armhf", "leds-armhf", "/build/bin/leds", "bin/leds-armhf")
+	grm.DockerCopy("arm64", "leds-arm64", "/build/bin/leds", "bin/leds-arm64")
 }
 
 func bossFrontend(rule string) {
