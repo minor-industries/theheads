@@ -10,6 +10,7 @@ import (
 	"github.com/minor-industries/codelab/power-monitor"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"os"
 	"path/filepath"
@@ -45,7 +46,7 @@ func run(logger *zap.Logger) error {
 			})
 		case "power-monitor":
 			go runComponent(logger, arg, func() error {
-				return power_monitor.Run(logger)
+				return power_monitor.Run(logger, prometheus.NewRegistry())
 			})
 		default:
 			return fmt.Errorf("unknown component: %s", arg)
