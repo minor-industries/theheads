@@ -6,6 +6,7 @@ import (
 	"github.com/cacktopus/theheads/common/standard_server"
 	serfClient "github.com/cacktopus/theheads/web/serf/client"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"os"
 	"strconv"
@@ -14,7 +15,10 @@ import (
 //go:embed templates/*
 var f embed.FS
 
-func Run(discover discovery.Discovery) error {
+func Run(
+	discover discovery.Discovery,
+	registry *prometheus.Registry,
+) error {
 	logger, err := zap.NewProduction()
 	if err != nil {
 		return errors.Wrap(err, "new logger")
@@ -35,6 +39,7 @@ func Run(discover discovery.Discovery) error {
 		Port:      port,
 		GrpcSetup: nil,
 		HttpSetup: setupRoutes(logger, discover),
+		Registry:  registry,
 	})
 
 	errCh := make(chan error)
@@ -43,10 +48,9 @@ func Run(discover discovery.Discovery) error {
 		errCh <- server.Run()
 	}()
 
-	go monitorTemperatures(errCh)
 	go turnOffLeds(logger, errCh)
 	go turnOffHDMI(logger, errCh)
-	go monitorLowVoltage(logger, errCh)
+	go monitorLowVoltage(logger, registry, errCh)
 	go serfClient.Run(logger, errCh)
 
 	for err := range errCh {

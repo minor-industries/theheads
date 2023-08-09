@@ -1,13 +1,12 @@
 package web
 
 import (
+	"github.com/minor-industries/platform/common/metrics"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"go.uber.org/zap"
 	"os/exec"
 	"strconv"
 	"strings"
-	"sync/atomic"
 	"time"
 )
 
@@ -25,33 +24,38 @@ Bit Hex value   Meaning
 19     80000    Soft temperature limit has occurred
 */
 
-func monitorLowVoltage(logger *zap.Logger, errCh chan error) {
-	ticker := time.NewTicker(5 * time.Second)
-	var throttled uint64
+type metric struct {
+	name string
+	mask int64
+	g    *metrics.TimeoutGauge
+}
 
-	gaugeFunc := func(name string, mask uint64) {
-		promauto.NewGaugeFunc(prometheus.GaugeOpts{
-			Namespace: "rpi",
-			Subsystem: "power",
-			Name:      name,
-		}, func() float64 {
-			val := atomic.LoadUint64(&throttled)
-			if val&mask != 0 {
-				return 1.0
-			}
-			return 0.0
-		})
+func monitorLowVoltage(
+	logger *zap.Logger,
+	registry *prometheus.Registry,
+	errCh chan error,
+) {
+	ticker := time.NewTicker(5 * time.Second)
+
+	allMetrics := []*metric{
+		{name: "low_voltage_now", mask: 0x1},
+		{name: "frequency_capped_now", mask: 0x2},
+		{name: "throttled_now", mask: 0x4},
+		{name: "soft_temperature_limit_now", mask: 0x8},
+		{name: "low_voltage_observed", mask: 0x10000},
+		{name: "frequency_capped_observed", mask: 0x20000},
+		{name: "throttled_observed", mask: 0x40000},
+		{name: "soft_temperature_limit_observed", mask: 0x80000},
 	}
 
-	gaugeFunc("low_voltage_now", 0x1)
-	gaugeFunc("frequency_capped_now", 0x2)
-	gaugeFunc("throttled_now", 0x4)
-	gaugeFunc("soft_temperature_limit_now", 0x8)
-
-	gaugeFunc("low_voltage_observed", 0x10000)
-	gaugeFunc("frequency_capped_observed", 0x20000)
-	gaugeFunc("throttled_observed", 0x40000)
-	gaugeFunc("soft_temperature_limit_observed", 0x80000)
+	for _, m := range allMetrics {
+		m.g = metrics.NewTimeoutGauge(time.Minute, prometheus.GaugeOpts{
+			Namespace: "rpi",
+			Subsystem: "power",
+			Name:      m.name,
+		})
+		registry.MustRegister(m.g.G)
+	}
 
 	for range ticker.C {
 		cmd := exec.Command("vcgencmd", "get_throttled")
@@ -78,6 +82,12 @@ func monitorLowVoltage(logger *zap.Logger, errCh chan error) {
 			continue
 		}
 
-		atomic.StoreUint64(&throttled, uint64(val))
+		for _, m := range allMetrics {
+			if val&m.mask != 0 {
+				m.g.Set(1.0)
+			} else {
+				m.g.Set(0.0)
+			}
+		}
 	}
 }

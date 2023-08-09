@@ -37,16 +37,26 @@ func run(logger *zap.Logger) error {
 				return errors.Wrap(err, "load config")
 			}
 			go runComponent(logger, arg, func() error {
-				timesync.Run(logger, &env, discovery.NewSerf("127.0.0.1:7373"))
+				timesync.Run(
+					logger,
+					&env,
+					discovery.NewSerf("127.0.0.1:7373"),
+				)
 				return nil
 			})
 		case "web":
 			go runComponent(logger, arg, func() error {
-				return web.Run(discovery.NewSerf("127.0.0.1:7373"))
+				return web.Run(
+					discovery.NewSerf("127.0.0.1:7373"),
+					prometheus.NewRegistry(),
+				)
 			})
 		case "power-monitor":
 			go runComponent(logger, arg, func() error {
-				return power_monitor.Run(logger, prometheus.NewRegistry())
+				return power_monitor.Run(
+					logger,
+					prometheus.NewRegistry(),
+				)
 			})
 		default:
 			return fmt.Errorf("unknown component: %s", arg)
