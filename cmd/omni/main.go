@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/cacktopus/theheads/common/discovery"
+	"github.com/cacktopus/theheads/common/metrics"
+	"github.com/cacktopus/theheads/common/standard_server"
 	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/timesync"
 	"github.com/cacktopus/theheads/timesync/cfg"
@@ -27,6 +29,10 @@ func run(logger *zap.Logger) error {
 	if len(args) == 0 {
 		return errors.New("no components given")
 	}
+
+	go runComponent(logger, "omni", func() error {
+		return runOmni(logger)
+	})
 
 	// TODO: ensure unique args (so we don't run multiple copies of something)
 
@@ -74,6 +80,21 @@ func run(logger *zap.Logger) error {
 	}
 
 	select {}
+}
+
+func runOmni(logger *zap.Logger) error {
+	server, err := standard_server.NewServer(&standard_server.Config{
+		Logger:    logger,
+		Port:      8098,
+		GrpcSetup: nil,
+		HttpSetup: nil,
+		Registry:  metrics.NewRegistry(),
+	})
+	if err != nil {
+		return errors.Wrap(err, "new server")
+	}
+
+	return server.Run()
 }
 
 func runComponent(
