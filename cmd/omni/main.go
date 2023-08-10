@@ -23,8 +23,10 @@ import (
 const retryDelay = 3 * time.Second
 const configHome = "/etc/env"
 
-func run(logger *zap.Logger) error {
+func run(debugLogger *zap.Logger) error {
 	args := os.Args[1:]
+
+	logger := debugLogger.WithOptions(zap.IncreaseLevel(zap.InfoLevel))
 
 	if len(args) == 0 {
 		return errors.New("no components given")
@@ -45,7 +47,7 @@ func run(logger *zap.Logger) error {
 			}
 			go runComponent(logger, arg, func() error {
 				timesync.Run(
-					logger,
+					debugLogger,
 					&env,
 					discovery.NewSerf("127.0.0.1:7373"),
 					prometheus.NewRegistry(),
@@ -139,7 +141,7 @@ func loadConfig(component string, cfg any) error {
 }
 
 func main() {
-	logger, _ := util.NewLogger(false)
+	logger, _ := util.NewLogger(true)
 
 	err := run(logger)
 	logger.Fatal("run exited", zap.Error(err))

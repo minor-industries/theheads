@@ -147,6 +147,7 @@ var rules = map[string]func(rule string){
 	"fast-camera64":  fastcamera64,
 	"fast-leds":      fastleds,
 	"fast-heads-cli": fastheadscli,
+	"fast-omni":      fastomni,
 
 	"protos": func(rule string) {
 		protoFiles, err := filepath.Glob("protos/*.proto")
@@ -227,6 +228,13 @@ func fastheadscli(rule string) {
 		"go", "build", "-o", "bin/heads-cli-arm64", "./cmd/heads-cli",
 	)
 	grm.Run(nil, "rsync", "-z", "--progress", "bin/heads-cli-arm64", "base01:")
+}
+
+func fastomni(rule string) {
+	grm.Run([]string{"GOOS=linux", "GOARCH=arm64"},
+		"go", "build", "-o", "bin/omni-arm64", "./cmd/omni",
+	)
+	grm.Run(nil, "rsync", "-z", "--progress", "bin/omni-arm64", "head01-j:")
 }
 
 func fastleds(rule string) {
