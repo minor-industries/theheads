@@ -73,7 +73,7 @@ func setupRoutes(
 			router.StaticFS("/logs", http.FS(sub))
 		}
 
-		router.GET("/", index(discover))
+		router.GET("/", index(logger, discover))
 
 		router.GET("/ws", gin.WrapF(func(w http.ResponseWriter, r *http.Request) {
 			conn, err := new(websocket.Upgrader).Upgrade(w, r, nil)

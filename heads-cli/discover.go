@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cacktopus/theheads/common/discovery"
+	"github.com/cacktopus/theheads/common/util"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"sort"
 	"strings"
 )
@@ -14,7 +14,7 @@ type DiscoverCmd struct {
 }
 
 func (opt *DiscoverCmd) Execute(args []string) error {
-	logger, _ := zap.NewProduction()
+	logger, _ := util.NewLogger(false)
 
 	discover := discovery.NewSerf("127.0.0.1:7373")
 	services, err := discover.Discover(logger)

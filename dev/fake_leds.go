@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"github.com/cacktopus/theheads/common/standard_server"
+	"github.com/cacktopus/theheads/common/util"
 	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
 
@@ -40,7 +40,7 @@ func (l fakeledsHandler) Ping(ctx context.Context, empty *heads.Empty) (*heads.E
 }
 
 func (l *fakeleds) Run(port int) {
-	logger, _ := zap.NewProduction()
+	logger, _ := util.NewLogger(false)
 
 	server, err := standard_server.NewServer(&standard_server.Config{
 		Logger: logger,

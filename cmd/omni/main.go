@@ -55,6 +55,7 @@ func run(logger *zap.Logger) error {
 		case "web":
 			go runComponent(logger, arg, func() error {
 				return web.Run(
+					logger,
 					discovery.NewSerf("127.0.0.1:7373"),
 					prometheus.NewRegistry(),
 				)

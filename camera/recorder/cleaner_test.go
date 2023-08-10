@@ -1,14 +1,14 @@
 package recorder
 
 import (
+	"github.com/cacktopus/theheads/common/util"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/zap"
 	"os"
 	"testing"
 )
 
 func Test_cleaner_clean(t *testing.T) {
-	logger, _ := zap.NewProduction()
+	logger, _ := util.NewLogger(false)
 
 	c := &cleaner{
 		logger:  logger,

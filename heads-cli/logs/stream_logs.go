@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cacktopus/theheads/common/discovery"
+	"github.com/cacktopus/theheads/common/util"
 	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"sort"
 	"strings"
@@ -25,7 +25,7 @@ type StreamLogsCommand struct {
 }
 
 func (s *StreamLogsCommand) Execute(args []string) error {
-	logger, _ := zap.NewProduction()
+	logger, _ := util.NewLogger(false)
 	ch := make(chan string)
 
 	services, err := discovery.NewSerf("127.0.0.1:7373").Discover(logger)

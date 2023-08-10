@@ -2,6 +2,7 @@ package solar
 
 import (
 	"github.com/cacktopus/theheads/common/standard_server"
+	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/solar/convert"
 	"github.com/goburrow/modbus"
 	"github.com/jessevdk/go-flags"
@@ -18,7 +19,7 @@ var opt struct {
 }
 
 func Run() error {
-	logger, _ := zap.NewProduction()
+	logger, _ := util.NewLogger(false)
 
 	_, err := flags.Parse(&opt)
 	if err != nil {

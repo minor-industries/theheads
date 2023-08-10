@@ -16,14 +16,10 @@ import (
 var f embed.FS
 
 func Run(
+	logger *zap.Logger,
 	discover discovery.Discovery,
 	registry *prometheus.Registry,
 ) error {
-	logger, err := zap.NewProduction()
-	if err != nil {
-		return errors.Wrap(err, "new logger")
-	}
-
 	strPort, ok := os.LookupEnv("HTTP_PORT")
 	if !ok {
 		strPort = "80"

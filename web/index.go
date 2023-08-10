@@ -38,10 +38,8 @@ func transform(s *Service, h *Host) *Host {
 	}
 }
 
-func index(discover discovery.Discovery) func(c *gin.Context) {
+func index(logger *zap.Logger, discover discovery.Discovery) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		logger, _ := zap.NewProduction()
-
 		var serfError string
 
 		found, err := discover.Discover(logger)
