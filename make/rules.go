@@ -32,6 +32,7 @@ var rules = map[string]func(rule string){
 	"camera-arm64":      grm.Docker,
 	"shellystats-arm64": grm.Pkg,
 	"carrier-arm64":     grm.Pkg,
+	"omni-arm64":        grm.Pkg,
 
 	"head-armhf":      grm.Pkg,
 	"heads-cli-armhf": grm.Pkg,
