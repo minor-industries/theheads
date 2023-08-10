@@ -9,6 +9,7 @@ import (
 	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -22,9 +23,32 @@ type journalSchema struct {
 }
 
 type StreamLogsCommand struct {
+	X            []string `long:"x" description:"exclude matching regular expression"`
+	Ne           []string `long:"ne" description:"exclude exactly matching string"`
+	XUnit        []string `long:"xunit" description:"exclude unit"`
+	XSyslogId    []string `long:"xsyslog-id" description:"exclude syslog id"`
+	XSystemdUnit []string `long:"xsystemd-unit" description:"exclude syslog id"`
+	Xhost        []string `long:"xhost" description:"exclude host"`
 }
 
 func (s *StreamLogsCommand) Execute(args []string) error {
+	txt, err := json.MarshalIndent(s, "", "  ")
+	if err != nil {
+		return errors.Wrap(err, "marshal")
+	}
+
+	fmt.Println(string(txt))
+
+	var regexs []*regexp.Regexp
+
+	for _, x := range s.X {
+		r, err := regexp.Compile(x)
+		if err != nil {
+			return errors.Wrap(err, "compile regex")
+		}
+		regexs = append(regexs, r)
+	}
+
 	logger, _ := util.NewLogger(false)
 	ch := make(chan string)
 
@@ -75,19 +99,19 @@ func (s *StreamLogsCommand) Execute(args []string) error {
 		}(entry)
 	}
 
-	for s := range ch {
+	for msg := range ch {
 		log := &journalSchema{}
-		err := json.Unmarshal([]byte(s), log)
+		err := json.Unmarshal([]byte(msg), log)
 		if err != nil {
 			fmt.Println("unmarshal json error")
 			fmt.Println("")
 			continue
 		}
 
-		zapLog := map[string]interface{}{}
+		zapLog := map[string]any{}
 		_ = json.Unmarshal([]byte(log.Message), &zapLog)
 
-		if filter(log, zapLog) {
+		if filter(s, regexs, log, zapLog) {
 			continue
 		}
 
@@ -97,18 +121,57 @@ func (s *StreamLogsCommand) Execute(args []string) error {
 	return nil
 }
 
-func filter(msg *journalSchema, zapLog map[string]interface{}) bool {
-	if msg.SystemdUnit == "serf.service" && strings.Contains(msg.Message, "agent.ipc: Accepted client:") {
-		return true
+func getMsg(
+	log *journalSchema,
+	zapLog map[string]any,
+) string {
+	m, ok := zapLog["msg"].(string)
+
+	if ok {
+		return m
+	} else {
+		return log.Message
+	}
+}
+
+func filter(s *StreamLogsCommand, regexs []*regexp.Regexp, log *journalSchema, zapLog map[string]any) bool {
+	msg := getMsg(log, zapLog)
+
+	for _, ne := range s.Ne {
+		if msg == ne {
+			return true
+		}
 	}
 
-	if msg.SystemdUnit == "rng-tools.service" {
-		return true
+	for _, x := range regexs {
+		ok := x.MatchString(msg)
+		if ok {
+			return true
+		}
 	}
 
-	message, _ := zapLog["msg"].(string)
-	if message == "gin logged" {
-		return true
+	for _, host := range s.Xhost {
+		if host == log.Hostname {
+			return true
+		}
+	}
+
+	for _, unit := range s.XUnit {
+		if log.Unit == unit {
+			return true
+		}
+	}
+
+	for _, id := range s.XSyslogId {
+		if log.SyslogIdentifier == id {
+			return true
+		}
+	}
+
+	for _, id := range s.XSystemdUnit {
+		if log.SystemdUnit == id {
+			return true
+		}
 	}
 
 	return false
@@ -116,13 +179,13 @@ func filter(msg *journalSchema, zapLog map[string]interface{}) bool {
 
 func showLog(
 	log *journalSchema,
-	zapLog map[string]interface{},
+	zapLog map[string]any,
 ) {
 	msg, _ := zapLog["msg"].(string)
 
 	if msg == "" {
 		fmt.Printf(
-			"%s %s %s %s\n%s\n\n",
+			"host=%s unit=%s syslog-id=%s systemd-unit=%s\n%s\n\n",
 			log.Hostname,
 			log.Unit,
 			log.SyslogIdentifier,
@@ -144,7 +207,7 @@ func showLog(
 		show = append([]string{"  " + msg}, show...)
 
 		fmt.Printf(
-			"%s %s %s %s\n%s\n\n",
+			"host=%s unit=%s syslog-id=%s systemd-unit=%s\n%s\n\n",
 			log.Hostname,
 			log.Unit,
 			log.SyslogIdentifier,
