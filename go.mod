@@ -4,7 +4,6 @@ go 1.19
 
 replace (
 	github.com/minor-industries/codelab => ../minor-industries/codelab
-	github.com/minor-industries/grm => ../minor-industries/grm
 	github.com/minor-industries/packager => ../minor-industries/packager
 	github.com/minor-industries/platform => ../minor-industries/platform
 	github.com/minor-industries/protobuf => ../minor-industries/protobuf
@@ -24,7 +23,7 @@ require (
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/larspensjo/Go-simplex-noise v0.0.0-20121005164837-bfdcb9fc4b93
 	github.com/minor-industries/codelab v0.0.0-00010101000000-000000000000
-	github.com/minor-industries/grm v0.0.1
+	github.com/minor-industries/grm v0.0.2
 	github.com/minor-industries/packager v0.0.0-00010101000000-000000000000
 	github.com/minor-industries/platform v0.0.2
 	github.com/minor-industries/protobuf v0.0.0-00010101000000-000000000000
@@ -48,7 +47,7 @@ require (
 	go.uber.org/zap v1.24.0
 	gobot.io/x/gobot v1.16.0
 	gocv.io/x/gocv v0.31.0
-	golang.org/x/crypto v0.9.0
+	golang.org/x/crypto v0.12.0
 	gonum.org/v1/gonum v0.13.0
 	gonum.org/v1/plot v0.13.0
 	google.golang.org/grpc v1.57.0
@@ -134,9 +133,9 @@ require (
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/image v0.7.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.9.0 // indirect
-	golang.org/x/term v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/term v0.11.0 // indirect
+	golang.org/x/text v0.12.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230525234030-28d5490b6b19 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
