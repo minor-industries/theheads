@@ -2,11 +2,13 @@ module github.com/cacktopus/theheads
 
 go 1.19
 
-replace github.com/minor-industries/platform => ../minor-industries/platform
-
-replace github.com/minor-industries/codelab => ../minor-industries/codelab
-
-replace github.com/minor-industries/protobuf => ../minor-industries/protobuf
+replace (
+	github.com/minor-industries/codelab => ../minor-industries/codelab
+	github.com/minor-industries/grm => ../minor-industries/grm
+	github.com/minor-industries/packager => ../minor-industries/packager
+	github.com/minor-industries/platform => ../minor-industries/platform
+	github.com/minor-industries/protobuf => ../minor-industries/protobuf
+)
 
 require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -23,6 +25,7 @@ require (
 	github.com/larspensjo/Go-simplex-noise v0.0.0-20121005164837-bfdcb9fc4b93
 	github.com/minor-industries/codelab v0.0.0-00010101000000-000000000000
 	github.com/minor-industries/grm v0.0.1
+	github.com/minor-industries/packager v0.0.0-00010101000000-000000000000
 	github.com/minor-industries/platform v0.0.2
 	github.com/minor-industries/protobuf v0.0.0-00010101000000-000000000000
 	github.com/mitchellh/mapstructure v1.5.0
@@ -63,6 +66,7 @@ require (
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bitfield/script v0.22.0 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
@@ -76,11 +80,13 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-fonts/liberation v0.3.1 // indirect
+	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/go-latex/latex v0.0.0-20230307184459-12ec69307ad9 // indirect
 	github.com/go-pdf/fpdf v0.8.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
+	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/goburrow/serial v0.1.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
@@ -97,6 +103,8 @@ require (
 	github.com/hashicorp/logutils v1.0.0 // indirect
 	github.com/hashicorp/memberlist v0.5.0 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
+	github.com/itchyny/gojq v0.12.12 // indirect
+	github.com/itchyny/timefmt-go v0.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
@@ -132,5 +140,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230525234030-28d5490b6b19 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	mvdan.cc/sh/v3 v3.6.0 // indirect
 	periph.io/x/periph v3.6.2+incompatible // indirect
 )
