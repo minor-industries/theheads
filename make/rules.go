@@ -31,7 +31,7 @@ var rules = map[string]func(rule string){
 	"lowred-arm64": func(rule string) {
 		if err := packager.Run("lowred", &packager.Opts{
 			Minor:        true,
-			AllowDirty:   true,
+			AllowDirty:   false,
 			New:          true,
 			Arch:         "arm64",
 			SharedFolder: os.ExpandEnv("$HOME/shared"),
