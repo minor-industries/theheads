@@ -3,7 +3,7 @@ package leds
 import (
 	"context"
 	"encoding/json"
-	"github.com/minor-industries/protobuf/gen/go/heads"
+	"github.com/cacktopus/theheads/leds/gen/go/heads"
 	"github.com/pkg/errors"
 )
 

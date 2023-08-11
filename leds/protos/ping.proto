@@ -1,0 +1,9 @@
+qsyntax = "proto3";
+
+package heads;
+
+import "common.proto";
+
+service ping {
+  rpc ping(Empty) returns (Empty);
+}
