@@ -17,7 +17,9 @@ const timeFmt = "2006-01-02 15:04:05"
 type Opts struct {
 	T string `short:"t" description:"time to use (in UTC). fmt: 2006-01-02 15:04:05"`
 
-	Show      struct{} `command:"show"`
+	ShowSystem struct{} `command:"show-system"`
+	ShowRTC    struct{} `command:"show-rtc"`
+
 	SetSystem struct{} `command:"set-system"`
 	SetRTC    struct{} `command:"set-rtc"`
 }
@@ -45,8 +47,10 @@ func run(logger *zap.Logger) error {
 	}
 
 	switch parser.Active.Name {
-	case "show":
-		return show(logger)
+	case "show-system":
+		return showSystem(logger, opts)
+	case "show-rtc":
+		return showRTC(logger)
 	case "set-system":
 		fmt.Println(opts)
 		return setSystemTime(logger, opts)
@@ -56,6 +60,22 @@ func run(logger *zap.Logger) error {
 		panic("invalid command")
 	}
 
+	return nil
+}
+
+func showSystem(logger *zap.Logger, opts *Opts) error {
+	var t time.Time
+	if opts.HasTime() {
+		var err error
+		t, err = opts.GetTime()
+		if err != nil {
+			return errors.Wrap(err, "get time from options")
+		}
+	} else {
+		t = time.Now().In(time.UTC)
+	}
+
+	logger.Info("system time", zap.String("t", t.String()))
 	return nil
 }
 
@@ -116,7 +136,7 @@ func setSystemTime(logger *zap.Logger, opts *Opts) error {
 	return nil
 }
 
-func show(logger *zap.Logger) error {
+func showRTC(logger *zap.Logger) error {
 	hwClock, err := rtc.SetupI2C()
 	if err != nil {
 		return errors.Wrap(err, "setup i2c")
