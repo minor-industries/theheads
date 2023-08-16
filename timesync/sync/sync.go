@@ -185,7 +185,7 @@ func processValues(
 
 	rtcDelta := max.Sub(min)
 
-	if rtcDelta > 5.0 {
+	if rtcDelta > 5*time.Second {
 		err := errors.New("clock source (RTC) delta is too large")
 		logger.Debug(err.Error(), zap.Duration("rtcDelta", rtcDelta))
 		return err
