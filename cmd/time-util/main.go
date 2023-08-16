@@ -148,7 +148,7 @@ func showRTC() error {
 		return errors.Wrap(err, "read time")
 	}
 
-	fmt.Println("time:", t.Format(timeFmt))
+	fmt.Println("rtc time:", t.Format(timeFmt))
 	return nil
 }
 
