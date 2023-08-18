@@ -152,7 +152,7 @@ var (
 			Namespace: "heads",
 			Subsystem: "head",
 			Name:      "heartbeat_duration",
-			Buckets:   prometheus.ExponentialBuckets(0.001, 2, 12),
+			Buckets:   prometheus.ExponentialBuckets(0.001, 2, 13),
 		},
 	)
 )
