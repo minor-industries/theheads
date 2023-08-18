@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"sync"
 	"time"
@@ -25,6 +26,8 @@ type Monitor struct {
 
 	lock        sync.Mutex
 	currentBeat beat
+
+	duration prometheus.Histogram
 }
 
 func (m *Monitor) Ack(ctx context.Context, in *heads.AckIn) (*heads.Empty, error) {
@@ -37,11 +40,17 @@ func (m *Monitor) Ack(ctx context.Context, in *heads.AckIn) (*heads.Empty, error
 	return &heads.Empty{}, nil
 }
 
-func NewMonitor(logger *zap.Logger, cfg *cfg.Cfg, b *broker.Broker) *Monitor {
+func NewMonitor(
+	logger *zap.Logger,
+	cfg *cfg.Cfg,
+	b *broker.Broker,
+	duration prometheus.Histogram,
+) *Monitor {
 	return &Monitor{
-		logger: logger,
-		cfg:    cfg,
-		broker: b,
+		logger:   logger,
+		cfg:      cfg,
+		broker:   b,
+		duration: duration,
 	}
 }
 
@@ -59,7 +68,9 @@ func (m *Monitor) beat() {
 		defer m.lock.Unlock()
 
 		if m.currentBeat.ID != "" {
+			dt := time.Now().Sub(m.currentBeat.start)
 			m.logger.Info("heartbeat timed out", zap.String("id", m.currentBeat.ID))
+			m.duration.Observe(dt.Seconds())
 		}
 
 		m.currentBeat = beat{
@@ -88,6 +99,7 @@ func (m *Monitor) ack(id string) {
 			zap.String("id", id),
 			zap.Float64("duration_ms", dt.Seconds()*1000.0),
 		)
+		m.duration.Observe(dt.Seconds())
 		m.currentBeat = beat{}
 	}
 }

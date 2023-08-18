@@ -82,6 +82,11 @@ func Run(env *cfg.Cfg) {
 		panic(err)
 	}
 
+	// hack: use sync.Once to allow multiple instances in-process
+	metricsOnce.Do(func() {
+		setupMetrics(mm)
+	})
+
 	controller := motor.NewController(
 		logger,
 		driver,
@@ -93,7 +98,7 @@ func Run(env *cfg.Cfg) {
 
 	go controller.Run()
 
-	heartbeatMonitor := heartbeat.NewMonitor(logger, env, b)
+	heartbeatMonitor := heartbeat.NewMonitor(logger, env, b, hHeartbeatDuration)
 	go heartbeatMonitor.PublishLoop()
 
 	svgs := cmap.New[[]byte]()
@@ -135,16 +140,22 @@ func Run(env *cfg.Cfg) {
 		panic(err)
 	}
 
-	// hack: use sync.Once to allow multiple instances in-process
-	metricsOnce.Do(func() {
-		setupMetrics(mm)
-	})
-
 	err = s.Run()
 	if err != nil {
 		panic(err)
 	}
 }
+
+var (
+	hHeartbeatDuration = prometheus.NewHistogram(
+		prometheus.HistogramOpts{
+			Namespace: "heads",
+			Subsystem: "head",
+			Name:      "heartbeat duration",
+			Buckets:   prometheus.ExponentialBuckets(0.001, 2, 12),
+		},
+	)
+)
 
 func setupMetrics(mm magnetometer.Sensor) {
 	prometheus.MustRegister(prometheus.NewGaugeFunc(prometheus.GaugeOpts{
@@ -176,4 +187,6 @@ func setupMetrics(mm magnetometer.Sensor) {
 		}
 		return read.Temperature
 	}))
+
+	prometheus.MustRegister(hHeartbeatDuration)
 }

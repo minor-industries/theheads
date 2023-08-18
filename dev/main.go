@@ -90,7 +90,7 @@ func main() {
 	if false {
 		services.Register("web", "web01", 80)
 		go func() {
-			err := web.Run(services, prometheus.NewRegistry())
+			err := web.Run(logger, services, prometheus.NewRegistry())
 			if err != nil {
 				panic(err)
 			}

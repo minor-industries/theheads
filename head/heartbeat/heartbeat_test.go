@@ -28,7 +28,7 @@ func TestMonitor(t *testing.T) {
 	go msgBroker.Start()
 	defer msgBroker.Stop()
 
-	m := NewMonitor(logger, env, msgBroker)
+	m := NewMonitor(logger, env, msgBroker, nil)
 
 	assert.Zero(t, m.getBeat())
 
