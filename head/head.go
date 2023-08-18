@@ -151,7 +151,7 @@ var (
 		prometheus.HistogramOpts{
 			Namespace: "heads",
 			Subsystem: "head",
-			Name:      "heartbeat duration",
+			Name:      "heartbeat_duration",
 			Buckets:   prometheus.ExponentialBuckets(0.001, 2, 12),
 		},
 	)
