@@ -20,7 +20,7 @@ func NewDocker(rule string) {
 	if err := packager.Run(pkgName, &packager.Opts{
 		Minor:        true,
 		AllowDirty:   false,
-		New:          true,
+		New:          false,
 		Arch:         arch,
 		SharedFolder: os.ExpandEnv("$HOME/shared"),
 	}, func(request *packager.BuildRequest) error {
