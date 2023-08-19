@@ -62,6 +62,7 @@ func (b *Boss) processHeartbeat(msg *schema.Heartbeat) {
 		head, ok := b.Scene.HeadMap[msg.Instance]
 		if !ok {
 			logger.Warn("heartbeat: unknown instance")
+			return
 		}
 		if err := b.HeadManager.AckHeartbeat(head.URI(), msg.ID); err != nil {
 			logger.Warn("failed to ack heartbeat", zap.Error(err))
