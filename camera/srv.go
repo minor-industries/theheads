@@ -12,6 +12,7 @@ import (
 	"github.com/cacktopus/theheads/camera/gen/go/heads"
 	"github.com/cacktopus/theheads/common/broker"
 	"github.com/cacktopus/theheads/common/util"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
@@ -41,6 +42,8 @@ func setupRoutes(
 	frameBroker *broker.Broker,
 	router *gin.Engine,
 ) {
+	pprof.Register(router)
+
 	router.GET("/ws", gin.WrapF(func(w http.ResponseWriter, r *http.Request) {
 		ws, err := upgrader.Upgrade(w, r, http.Header{"Sec-WebSocket-Protocol": {"null"}})
 		if err != nil {

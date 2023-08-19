@@ -17,6 +17,7 @@ import (
 	"github.com/cacktopus/theheads/head/sensor/magnetometer"
 	"github.com/cacktopus/theheads/head/sensor/null_sensor"
 	"github.com/cacktopus/theheads/head/voices"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/minor-industries/protobuf/gen/go/heads"
 	cmap "github.com/orcaman/concurrent-map/v2"
@@ -125,6 +126,8 @@ func Run(env *cfg.Cfg) {
 			return nil
 		},
 		HttpSetup: func(router *gin.Engine) error {
+			pprof.Register(router)
+
 			router.GET("/plots/:name", func(c *gin.Context) {
 				svg, ok := svgs.Get(c.Param("name")) // TODO:
 				if !ok {
