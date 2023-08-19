@@ -27,7 +27,7 @@ type Monitor struct {
 	lock        sync.Mutex
 	currentBeat beat
 
-	duration prometheus.Histogram
+	hDuration prometheus.Histogram
 }
 
 func (m *Monitor) Ack(ctx context.Context, in *heads.AckIn) (*heads.Empty, error) {
@@ -44,18 +44,18 @@ func NewMonitor(
 	logger *zap.Logger,
 	cfg *cfg.Cfg,
 	b *broker.Broker,
-	duration prometheus.Histogram,
+	hDuration prometheus.Histogram,
 ) *Monitor {
 	return &Monitor{
-		logger:   logger,
-		cfg:      cfg,
-		broker:   b,
-		duration: duration,
+		logger:    logger,
+		cfg:       cfg,
+		broker:    b,
+		hDuration: hDuration,
 	}
 }
 
 func (m *Monitor) PublishLoop() {
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(m.cfg.HeartbeatInterval)
 
 	for range ticker.C {
 		m.beat()
@@ -69,8 +69,8 @@ func (m *Monitor) beat() {
 
 		if m.currentBeat.ID != "" {
 			dt := time.Now().Sub(m.currentBeat.start)
-			m.logger.Info("heartbeat timed out", zap.String("id", m.currentBeat.ID))
-			m.duration.Observe(dt.Seconds())
+			m.logger.Debug("heartbeat timed out", zap.String("id", m.currentBeat.ID))
+			m.hDuration.Observe(dt.Seconds())
 		}
 
 		m.currentBeat = beat{
@@ -94,12 +94,12 @@ func (m *Monitor) ack(id string) {
 
 	if id == m.currentBeat.ID {
 		dt := time.Now().Sub(m.currentBeat.start)
-		m.logger.Info(
+		m.logger.Debug(
 			"acked heartbeat",
 			zap.String("id", id),
 			zap.Float64("duration_ms", dt.Seconds()*1000.0),
 		)
-		m.duration.Observe(dt.Seconds())
+		m.hDuration.Observe(dt.Seconds())
 		m.currentBeat = beat{}
 	}
 }

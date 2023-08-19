@@ -3,6 +3,7 @@ package cfg
 import (
 	"github.com/cacktopus/theheads/head/motor"
 	"github.com/cacktopus/theheads/head/voices"
+	"time"
 )
 
 type Cfg struct {
@@ -20,4 +21,6 @@ type Cfg struct {
 	Voices voices.Cfg
 
 	Debug bool `envconfig:"optional"`
+
+	HeartbeatInterval time.Duration `envconfig:"default=1s"`
 }
