@@ -56,11 +56,15 @@ func (b *Boss) SetupMetrics() {
 }
 
 func (b *Boss) processHeartbeat(msg *schema.Heartbeat) {
+	logger := b.Logger.With(zap.String("instance", msg.Instance))
 	switch msg.Component {
 	case "head":
-		head := b.Scene.HeadMap[msg.Instance]
+		head, ok := b.Scene.HeadMap[msg.Instance]
+		if !ok {
+			logger.Warn("heartbeat: unknown instance")
+		}
 		if err := b.HeadManager.AckHeartbeat(head.URI(), msg.ID); err != nil {
-			b.Logger.Warn("failed to ack heartbeat", zap.Error(err))
+			logger.Warn("failed to ack heartbeat", zap.Error(err))
 			return
 		}
 	}
