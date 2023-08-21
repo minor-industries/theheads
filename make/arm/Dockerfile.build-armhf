@@ -37,7 +37,6 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY common common
-COPY gen gen
 
 COPY camera camera
 COPY cmd/camera ./cmd/camera

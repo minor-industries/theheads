@@ -35,7 +35,6 @@ WORKDIR /build
 COPY go.mod go.sum ./
 
 COPY common common
-COPY gen gen
 
 COPY leds leds
 
