@@ -5,9 +5,9 @@ package draw
 
 import (
 	"fmt"
+	"github.com/minor-industries/platform/schema"
 	"github.com/minor-industries/theheads/boss/frontend/reaper"
 	"github.com/minor-industries/theheads/boss/scene"
-	"github.com/minor-industries/theheads/common/schema"
 	"syscall/js"
 	"time"
 )

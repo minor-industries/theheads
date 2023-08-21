@@ -2,7 +2,7 @@ package grid
 
 import (
 	"github.com/minor-industries/platform/common/geom"
-	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/platform/schema"
 	"math"
 	"time"
 )

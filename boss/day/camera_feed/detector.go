@@ -2,7 +2,7 @@ package camera_feed
 
 import (
 	"github.com/minor-industries/platform/common/broker"
-	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/platform/schema"
 	"github.com/montanaflynn/stats"
 	"github.com/prometheus/client_golang/prometheus"
 	"sync/atomic"

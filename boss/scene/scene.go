@@ -5,7 +5,7 @@ import (
 	"fmt"
 	geom2 "github.com/minor-industries/platform/common/geom"
 	"github.com/minor-industries/platform/common/timed_reset"
-	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/platform/schema"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
 	"io/ioutil"

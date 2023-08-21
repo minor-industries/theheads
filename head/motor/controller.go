@@ -2,7 +2,7 @@ package motor
 
 import (
 	"github.com/minor-industries/platform/common/broker"
-	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/platform/schema"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"math"
