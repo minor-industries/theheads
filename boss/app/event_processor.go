@@ -1,8 +1,8 @@
 package app
 
 import (
+	geom2 "github.com/minor-industries/platform/common/geom"
 	"github.com/minor-industries/theheads/boss/rate_limiter"
-	geom2 "github.com/minor-industries/theheads/common/geom"
 	"github.com/minor-industries/theheads/common/schema"
 	"go.uber.org/zap"
 	"time"

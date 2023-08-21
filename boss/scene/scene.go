@@ -3,8 +3,8 @@ package scene
 import (
 	"bytes"
 	"fmt"
+	geom2 "github.com/minor-industries/platform/common/geom"
 	"github.com/minor-industries/platform/common/timed_reset"
-	geom2 "github.com/minor-industries/theheads/common/geom"
 	"github.com/minor-industries/theheads/common/schema"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
