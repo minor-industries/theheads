@@ -20,10 +20,13 @@ import (
 
 func headEnv(name string) *cfg.Cfg {
 	env := &cfg.Cfg{
-		Instance:    name,
-		Port:        util.RandomPort(),
-		FakeStepper: true,
-		SensorPin:   0,
+		Instance:           name,
+		Port:               util.RandomPort(),
+		FakeStepper:        true,
+		SensorPin:          0,
+		I2CBus:             "",
+		EnableMagnetSensor: false,
+		MagnetSensorAddrs:  nil,
 		Motor: motor.Cfg{
 			NumSteps:              200,
 			StepSpeed:             30,
@@ -32,6 +35,8 @@ func headEnv(name string) *cfg.Cfg {
 		Voices: voices.Cfg{
 			MediaPath: os.ExpandEnv("$HOME/shared/theheads/voices"),
 		},
+		Debug:             false,
+		HeartbeatInterval: time.Second,
 	}
 	return env
 }
