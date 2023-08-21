@@ -46,7 +46,11 @@ func NewPkg(rule string) {
 }
 
 var arm64 = map[string]func(rule string){
-	"camera-arm64": NewDocker,
+	"camera-arm64": func(rule string) {
+		grm.Cd("camera", func() {
+			grm.Run(nil, "go", "run", "./make")
+		})
+	},
 	"leds-arm64":   NewDocker,
 	"lowred-arm64": NewDocker,
 
