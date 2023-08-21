@@ -1,8 +1,8 @@
 package cfg
 
 import (
-	"github.com/cacktopus/theheads/head/motor"
-	"github.com/cacktopus/theheads/head/voices"
+	"github.com/minor-industries/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/voices"
 	"time"
 )
 

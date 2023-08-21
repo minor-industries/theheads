@@ -2,12 +2,12 @@ package head_manager
 
 import (
 	"context"
-	"github.com/cacktopus/theheads/boss/cfg"
-	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/boss/services"
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/common/metrics"
 	"github.com/minor-industries/protobuf/gen/go/heads"
+	"github.com/minor-industries/theheads/boss/cfg"
+	"github.com/minor-industries/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/services"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/common/metrics"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"

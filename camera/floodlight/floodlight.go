@@ -2,7 +2,7 @@ package floodlight
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/common/util"
+	"github.com/minor-industries/theheads/common/util"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"io/ioutil"

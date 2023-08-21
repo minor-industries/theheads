@@ -1,9 +1,9 @@
 package find_zeros
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/scenes"
-	"github.com/cacktopus/theheads/boss/watchdog"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/scenes"
+	"github.com/minor-industries/theheads/boss/watchdog"
 )
 
 func FindZeros(sp *dj.SceneParams) {

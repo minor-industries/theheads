@@ -2,12 +2,12 @@ package dj
 
 import (
 	"context"
-	"github.com/cacktopus/theheads/boss/app"
-	"github.com/cacktopus/theheads/boss/grid"
-	"github.com/cacktopus/theheads/boss/head_manager"
-	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/boss/services"
-	"github.com/cacktopus/theheads/boss/util"
+	"github.com/minor-industries/theheads/boss/app"
+	"github.com/minor-industries/theheads/boss/grid"
+	"github.com/minor-industries/theheads/boss/head_manager"
+	"github.com/minor-industries/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/services"
+	"github.com/minor-industries/theheads/boss/util"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/atomic"
 	"go.uber.org/zap"

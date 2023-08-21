@@ -1,8 +1,8 @@
 package find_zeros
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
 	gen "github.com/minor-industries/protobuf/gen/go/heads"
+	"github.com/minor-industries/theheads/boss/dj"
 	"go.uber.org/zap"
 )
 

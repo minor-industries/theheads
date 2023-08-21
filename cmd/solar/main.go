@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/solar"
+	"github.com/minor-industries/theheads/solar"
 	"os"
 )
 

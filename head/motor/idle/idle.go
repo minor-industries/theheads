@@ -1,6 +1,6 @@
 package idle
 
-import "github.com/cacktopus/theheads/head/motor"
+import "github.com/minor-industries/theheads/head/motor"
 
 type Idle struct{}
 

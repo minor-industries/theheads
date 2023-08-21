@@ -1,8 +1,8 @@
 package basic
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/watchdog"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/watchdog"
 	"time"
 )
 

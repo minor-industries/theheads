@@ -2,8 +2,8 @@ package scenes
 
 import (
 	"context"
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/scene"
 	"sync"
 	"time"
 )

@@ -1,8 +1,8 @@
 package motor_test
 
 import (
-	"github.com/cacktopus/theheads/head/motor"
-	"github.com/cacktopus/theheads/head/motor/fake_stepper"
+	"github.com/minor-industries/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/motor/fake_stepper"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

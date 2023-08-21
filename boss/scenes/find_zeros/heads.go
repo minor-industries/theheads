@@ -1,10 +1,10 @@
 package find_zeros
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/head_manager"
-	"github.com/cacktopus/theheads/boss/scene"
 	"github.com/minor-industries/protobuf/gen/go/heads"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/head_manager"
+	"github.com/minor-industries/theheads/boss/scene"
 	"go.uber.org/zap"
 	"sync"
 	"time"

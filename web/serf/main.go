@@ -1,6 +1,6 @@
 package main
 
-import "github.com/cacktopus/theheads/web/serf/client"
+import "github.com/minor-industries/theheads/web/serf/client"
 
 func main() {
 	client.Run(nil)

@@ -1,8 +1,8 @@
 package motion_detector
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
-	"github.com/cacktopus/theheads/camera/util"
+	"github.com/minor-industries/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/util"
 	"gocv.io/x/gocv"
 	"image"
 )

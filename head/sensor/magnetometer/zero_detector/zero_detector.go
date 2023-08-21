@@ -3,9 +3,9 @@ package zero_detector
 import (
 	"bytes"
 	"fmt"
-	"github.com/cacktopus/theheads/common/metrics"
-	"github.com/cacktopus/theheads/head/motor"
-	"github.com/cacktopus/theheads/head/sensor/magnetometer"
+	"github.com/minor-industries/theheads/common/metrics"
+	"github.com/minor-industries/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/sensor/magnetometer"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/atomic"

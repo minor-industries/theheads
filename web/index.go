@@ -1,8 +1,8 @@
 package web
 
 import (
-	"github.com/cacktopus/theheads/common/discovery"
 	"github.com/gin-gonic/gin"
+	"github.com/minor-industries/theheads/common/discovery"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"net/http"

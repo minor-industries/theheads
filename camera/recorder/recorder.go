@@ -2,7 +2,7 @@ package recorder
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/common/metrics"
+	"github.com/minor-industries/theheads/common/metrics"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"

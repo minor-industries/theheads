@@ -3,10 +3,10 @@ package sync
 import (
 	"context"
 	"fmt"
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/timesync/cfg"
-	"github.com/cacktopus/theheads/timesync/util"
 	gen "github.com/minor-industries/protobuf/gen/go/heads"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/timesync/cfg"
+	"github.com/minor-industries/theheads/timesync/util"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

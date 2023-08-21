@@ -3,7 +3,7 @@ package leds
 import (
 	"context"
 	"encoding/json"
-	"github.com/cacktopus/theheads/leds/gen/go/heads"
+	"github.com/minor-industries/theheads/leds/gen/go/heads"
 	"github.com/pkg/errors"
 )
 

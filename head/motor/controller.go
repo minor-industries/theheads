@@ -1,8 +1,8 @@
 package motor
 
 import (
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/schema"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/schema"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"math"

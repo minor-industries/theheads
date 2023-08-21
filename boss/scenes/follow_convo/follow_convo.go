@@ -1,13 +1,13 @@
 package follow_convo
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/rate_limiter"
-	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/boss/scenes"
-	"github.com/cacktopus/theheads/boss/watchdog"
-	"github.com/cacktopus/theheads/common/geom"
-	"github.com/cacktopus/theheads/common/schema"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/rate_limiter"
+	"github.com/minor-industries/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/scenes"
+	"github.com/minor-industries/theheads/boss/watchdog"
+	"github.com/minor-industries/theheads/common/geom"
+	"github.com/minor-industries/theheads/common/schema"
 	"go.uber.org/zap"
 	"math/rand"
 	"sort"

@@ -3,7 +3,7 @@ package lib
 import (
 	"bufio"
 	"bytes"
-	"github.com/cacktopus/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/cfg"
 	"github.com/pixiv/go-libjpeg/jpeg"
 	"github.com/pkg/errors"
 	"image"

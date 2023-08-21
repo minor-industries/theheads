@@ -2,8 +2,8 @@ package leds
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/leds/schema"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/leds/schema"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"

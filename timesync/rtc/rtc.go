@@ -1,7 +1,7 @@
 package rtc
 
 import (
-	"github.com/cacktopus/theheads/timesync/rtc/ds3231"
+	"github.com/minor-industries/theheads/timesync/rtc/ds3231"
 	"github.com/pkg/errors"
 	"periph.io/x/conn/v3/i2c"
 	"periph.io/x/conn/v3/i2c/i2creg"

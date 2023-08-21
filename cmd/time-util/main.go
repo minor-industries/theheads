@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/timesync/rtc"
-	"github.com/cacktopus/theheads/timesync/util"
 	"github.com/jessevdk/go-flags"
+	"github.com/minor-industries/theheads/timesync/rtc"
+	"github.com/minor-industries/theheads/timesync/util"
 	"github.com/pkg/errors"
 	"os"
 	"time"

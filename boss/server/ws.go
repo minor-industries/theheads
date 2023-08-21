@@ -2,10 +2,10 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/schema"
-	"github.com/cacktopus/theheads/common/wsrpc/server"
 	"github.com/gorilla/websocket"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/theheads/common/wsrpc/server"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

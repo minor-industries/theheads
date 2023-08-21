@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/cfg"
 	"image"
 	"io"
 )

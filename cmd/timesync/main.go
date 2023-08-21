@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/common/util"
-	"github.com/cacktopus/theheads/timesync"
-	"github.com/cacktopus/theheads/timesync/cfg"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/common/util"
+	"github.com/minor-industries/theheads/timesync"
+	"github.com/minor-industries/theheads/timesync/cfg"
 	"github.com/vrischmann/envconfig"
 )
 

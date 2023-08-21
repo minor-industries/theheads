@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/cacktopus/theheads/head"
-	"github.com/cacktopus/theheads/head/cfg"
+	"github.com/minor-industries/theheads/head"
+	"github.com/minor-industries/theheads/head/cfg"
 	"github.com/vrischmann/envconfig"
 )
 

@@ -1,8 +1,8 @@
 package zero_detector
 
 import (
-	"github.com/cacktopus/theheads/head/motor"
-	"github.com/cacktopus/theheads/head/sensor"
+	"github.com/minor-industries/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/sensor"
 	"go.uber.org/zap"
 )
 

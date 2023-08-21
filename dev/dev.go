@@ -1,11 +1,11 @@
 package main
 
 import (
-	cfg2 "github.com/cacktopus/theheads/boss/cfg"
-	"github.com/cacktopus/theheads/common/util"
-	"github.com/cacktopus/theheads/head/cfg"
-	"github.com/cacktopus/theheads/head/motor"
-	"github.com/cacktopus/theheads/head/voices"
+	cfg2 "github.com/minor-industries/theheads/boss/cfg"
+	"github.com/minor-industries/theheads/common/util"
+	"github.com/minor-industries/theheads/head/cfg"
+	"github.com/minor-industries/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/voices"
 	"os"
 	"time"
 )

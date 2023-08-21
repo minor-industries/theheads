@@ -1,9 +1,9 @@
 package jitter
 
 import (
-	"github.com/cacktopus/theheads/head/motor"
-	"github.com/cacktopus/theheads/head/motor/seeker"
 	"github.com/larspensjo/Go-simplex-noise/simplexnoise"
+	"github.com/minor-industries/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/motor/seeker"
 	"math/rand"
 	"time"
 )

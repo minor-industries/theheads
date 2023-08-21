@@ -1,7 +1,7 @@
 package stepper
 
 import (
-	"github.com/cacktopus/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/motor"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"gobot.io/x/gobot/drivers/i2c"

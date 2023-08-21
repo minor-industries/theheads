@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
-	"github.com/cacktopus/theheads/common/util"
+	"github.com/minor-industries/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/common/util"
 )
 
 func cameraEnv(name string, streamFile string) *cfg.Cfg {

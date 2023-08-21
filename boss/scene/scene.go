@@ -3,9 +3,9 @@ package scene
 import (
 	"bytes"
 	"fmt"
-	geom2 "github.com/cacktopus/theheads/common/geom"
-	"github.com/cacktopus/theheads/common/schema"
-	"github.com/cacktopus/theheads/common/timed_reset"
+	geom2 "github.com/minor-industries/theheads/common/geom"
+	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/theheads/common/timed_reset"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
 	"io/ioutil"

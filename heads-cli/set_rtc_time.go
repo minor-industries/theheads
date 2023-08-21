@@ -1,7 +1,7 @@
 package heads_cli
 
 import (
-	"github.com/cacktopus/theheads/timesync/rtc"
+	"github.com/minor-industries/theheads/timesync/rtc"
 	"github.com/pkg/errors"
 	"time"
 )

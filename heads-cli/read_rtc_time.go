@@ -2,7 +2,7 @@ package heads_cli
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/timesync/rtc"
+	"github.com/minor-industries/theheads/timesync/rtc"
 	"github.com/pkg/errors"
 	"time"
 )

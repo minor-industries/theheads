@@ -1,10 +1,10 @@
 package file
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
-	"github.com/cacktopus/theheads/camera/recorder"
-	"github.com/cacktopus/theheads/camera/recorder/simple_recorder"
-	"github.com/cacktopus/theheads/camera/source/mjpeg/lib"
+	"github.com/minor-industries/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/recorder"
+	"github.com/minor-industries/theheads/camera/recorder/simple_recorder"
+	"github.com/minor-industries/theheads/camera/source/mjpeg/lib"
 	"gocv.io/x/gocv"
 	"os"
 	"time"

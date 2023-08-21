@@ -2,10 +2,10 @@ package main
 
 import (
 	_ "embed"
-	"github.com/cacktopus/theheads/boss"
-	"github.com/cacktopus/theheads/boss/cfg"
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/common/dotenv"
+	"github.com/minor-industries/theheads/boss"
+	"github.com/minor-industries/theheads/boss/cfg"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/common/dotenv"
 	"github.com/pkg/errors"
 	"github.com/vrischmann/envconfig"
 )

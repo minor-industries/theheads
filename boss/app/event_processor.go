@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/cacktopus/theheads/boss/rate_limiter"
-	geom2 "github.com/cacktopus/theheads/common/geom"
-	"github.com/cacktopus/theheads/common/schema"
+	"github.com/minor-industries/theheads/boss/rate_limiter"
+	geom2 "github.com/minor-industries/theheads/common/geom"
+	"github.com/minor-industries/theheads/common/schema"
 	"go.uber.org/zap"
 	"time"
 )

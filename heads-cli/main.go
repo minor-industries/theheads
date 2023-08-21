@@ -1,8 +1,8 @@
 package heads_cli
 
 import (
-	"github.com/cacktopus/theheads/heads-cli/logs"
 	"github.com/jessevdk/go-flags"
+	"github.com/minor-industries/theheads/heads-cli/logs"
 	"github.com/pkg/errors"
 )
 

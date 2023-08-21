@@ -3,8 +3,8 @@ package heads_cli
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/common/util"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/common/util"
 	"github.com/pkg/errors"
 	"sort"
 	"strings"

@@ -1,8 +1,8 @@
 package scenes
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/scene"
 	"go.uber.org/zap"
 	"time"
 )

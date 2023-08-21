@@ -5,9 +5,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/boss/frontend/draw"
-	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/common/wsrpc/client"
+	"github.com/minor-industries/theheads/boss/frontend/draw"
+	"github.com/minor-industries/theheads/boss/scene"
+	"github.com/minor-industries/theheads/common/wsrpc/client"
 	"sync"
 	"syscall/js"
 )

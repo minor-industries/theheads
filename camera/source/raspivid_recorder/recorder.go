@@ -1,9 +1,9 @@
 package raspivid_recorder
 
 import (
-	"github.com/cacktopus/theheads/camera/h264"
-	"github.com/cacktopus/theheads/camera/recorder"
-	"github.com/cacktopus/theheads/camera/recorder/simple_recorder"
+	"github.com/minor-industries/theheads/camera/h264"
+	"github.com/minor-industries/theheads/camera/recorder"
+	"github.com/minor-industries/theheads/camera/recorder/simple_recorder"
 	"io"
 )
 

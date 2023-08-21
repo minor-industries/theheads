@@ -2,12 +2,12 @@ package leds
 
 import (
 	"encoding/json"
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/standard_server"
-	"github.com/cacktopus/theheads/common/util"
-	"github.com/cacktopus/theheads/leds/gen/go/heads"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/standard_server"
+	"github.com/minor-industries/theheads/common/util"
+	"github.com/minor-industries/theheads/leds/gen/go/heads"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/vrischmann/envconfig"

@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/common/discovery"
+	"github.com/minor-industries/theheads/common/discovery"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"sync"

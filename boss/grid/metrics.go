@@ -1,7 +1,7 @@
 package grid
 
 import (
-	"github.com/cacktopus/theheads/common/metrics"
+	"github.com/minor-industries/theheads/common/metrics"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

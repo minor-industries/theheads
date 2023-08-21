@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/web"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/web"
 )
 
 func main() {

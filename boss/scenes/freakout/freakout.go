@@ -2,9 +2,9 @@ package freakout
 
 import (
 	"context"
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/boss/scenes"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/scenes"
 	"go.uber.org/zap"
 	"math/rand"
 	"sync"

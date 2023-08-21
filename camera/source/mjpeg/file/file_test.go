@@ -1,7 +1,7 @@
 package file
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/cfg"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gocv.io/x/gocv"

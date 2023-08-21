@@ -2,9 +2,9 @@ package web
 
 import (
 	"embed"
-	"github.com/cacktopus/theheads/common/discovery"
-	"github.com/cacktopus/theheads/common/standard_server"
-	serfClient "github.com/cacktopus/theheads/web/serf/client"
+	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/theheads/common/standard_server"
+	serfClient "github.com/minor-industries/theheads/web/serf/client"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"

@@ -1,7 +1,7 @@
 package camera
 
 import (
-	"github.com/cacktopus/theheads/common/schema"
+	"github.com/minor-industries/theheads/common/schema"
 	"github.com/montanaflynn/stats"
 	"time"
 )

@@ -2,8 +2,8 @@ package heads_cli
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/heads-cli/lib"
 	"github.com/hashicorp/serf/client"
+	"github.com/minor-industries/theheads/heads-cli/lib"
 	"github.com/pkg/errors"
 	"os"
 	"os/exec"

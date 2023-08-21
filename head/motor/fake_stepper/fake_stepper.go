@@ -1,7 +1,7 @@
 package fake_stepper
 
 import (
-	"github.com/cacktopus/theheads/head/motor"
+	"github.com/minor-industries/theheads/head/motor"
 )
 
 type Motor struct {

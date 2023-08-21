@@ -1,7 +1,7 @@
 package source
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/cfg"
 	"github.com/pkg/errors"
 	"gocv.io/x/gocv"
 )

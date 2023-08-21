@@ -2,11 +2,11 @@ package heartbeat
 
 import (
 	"context"
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/schema"
-	"github.com/cacktopus/theheads/head/cfg"
 	"github.com/google/uuid"
 	"github.com/minor-industries/protobuf/gen/go/heads"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/schema"
+	"github.com/minor-industries/theheads/head/cfg"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"

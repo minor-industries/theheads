@@ -1,8 +1,8 @@
 package camera_feed
 
 import (
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/schema"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/schema"
 	"github.com/montanaflynn/stats"
 	"github.com/prometheus/client_golang/prometheus"
 	"sync/atomic"

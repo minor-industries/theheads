@@ -1,8 +1,8 @@
 package leds
 
 import (
-	"github.com/cacktopus/theheads/leds/schema"
 	"github.com/gvalkov/golang-evdev"
+	"github.com/minor-industries/theheads/leds/schema"
 	"time"
 )
 

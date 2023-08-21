@@ -2,10 +2,10 @@ package grid
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/boss/scene"
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/geom"
-	"github.com/cacktopus/theheads/common/schema"
+	"github.com/minor-industries/theheads/boss/scene"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/geom"
+	"github.com/minor-industries/theheads/common/schema"
 	"go.uber.org/zap"
 	"gonum.org/v1/gonum/mat"
 	"math"

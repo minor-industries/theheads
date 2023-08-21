@@ -3,7 +3,7 @@ package source
 import (
 	"bufio"
 	"fmt"
-	"github.com/cacktopus/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/cfg"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"gocv.io/x/gocv"

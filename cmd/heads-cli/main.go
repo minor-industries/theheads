@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cacktopus/theheads/heads-cli"
+	"github.com/minor-industries/theheads/heads-cli"
 	"os"
 )
 

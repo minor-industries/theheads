@@ -1,8 +1,8 @@
 package discovery
 
 import (
-	"github.com/cacktopus/theheads/common/serf_service"
 	"github.com/hashicorp/serf/client"
+	"github.com/minor-industries/theheads/common/serf_service"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

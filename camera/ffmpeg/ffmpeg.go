@@ -1,9 +1,9 @@
 package ffmpeg
 
 import (
-	"github.com/cacktopus/theheads/camera/cfg"
-	"github.com/cacktopus/theheads/common/broker"
-	"github.com/cacktopus/theheads/common/metrics"
+	"github.com/minor-industries/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/theheads/common/metrics"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"gocv.io/x/gocv"

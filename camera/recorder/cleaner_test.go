@@ -1,7 +1,7 @@
 package recorder
 
 import (
-	"github.com/cacktopus/theheads/common/util"
+	"github.com/minor-industries/theheads/common/util"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"

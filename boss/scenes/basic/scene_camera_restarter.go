@@ -1,9 +1,9 @@
 package basic
 
 import (
-	"github.com/cacktopus/theheads/boss/dj"
-	"github.com/cacktopus/theheads/boss/rate_limiter"
-	"github.com/cacktopus/theheads/boss/scene"
+	"github.com/minor-industries/theheads/boss/dj"
+	"github.com/minor-industries/theheads/boss/rate_limiter"
+	"github.com/minor-industries/theheads/boss/scene"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"time"

@@ -25,7 +25,7 @@ func main() {
 				// this may run into trouble if there are two proto files with the same name in
 				// different directories
 				base := filepath.Base(file)
-				opt := fmt.Sprintf("--go_opt=M%s=github.com/cacktopus/theheads/leds/gen/go/heads", base)
+				opt := fmt.Sprintf("--go_opt=M%s=github.com/minor-industries/theheads/leds/gen/go/heads", base)
 				args = append(args, opt)
 			}
 

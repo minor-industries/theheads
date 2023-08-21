@@ -1,9 +1,8 @@
-
 package gpio_sensor
 
 import (
 	"fmt"
-	"github.com/cacktopus/theheads/common/util"
+	"github.com/minor-industries/theheads/common/util"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"path/filepath"

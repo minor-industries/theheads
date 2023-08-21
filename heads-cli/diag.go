@@ -1,7 +1,7 @@
 package heads_cli
 
 import (
-	"github.com/cacktopus/theheads/heads-cli/diag"
+	"github.com/minor-industries/theheads/heads-cli/diag"
 )
 
 type DiagCmd struct {

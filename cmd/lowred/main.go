@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cacktopus/theheads/common/geom"
+	"github.com/minor-industries/theheads/common/geom"
 	ws281x "github.com/rpi-ws281x/rpi-ws281x-go"
 	"github.com/vrischmann/envconfig"
 	"time"
