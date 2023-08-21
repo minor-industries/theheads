@@ -31,7 +31,32 @@ func NewDocker(rule string) {
 	}
 }
 
+var arm64 = map[string]func(rule string){
+	"camera-arm64": NewDocker,
+	"leds-arm64":   NewDocker,
+	"lowred-arm64": NewDocker,
+
+	"boss-arm64":      grm.Steps(bossFrontend, grm.Pkg),
+	"head-arm64":      grm.Pkg,
+	"heads-cli-arm64": grm.Pkg,
+	"omni-arm64":      grm.Pkg,
+	"solar-arm64":     grm.Pkg,
+	"time-util-arm64": grm.Pkg,
+}
+
+func init() {
+	for k, v := range arm64 {
+		rules[k] = v
+	}
+}
+
 var rules = map[string]func(rule string){
+	"all": func(rule string) {
+		for name, fn := range arm64 {
+			fn(name)
+		}
+	},
+
 	//"bin/boss":            bin,
 	"bin/camera":    grm.Bin,
 	"bin/head":      grm.Bin,
@@ -43,19 +68,10 @@ var rules = map[string]func(rule string){
 	"bin/timesync":  grm.Bin,
 	"bin/web":       grm.Bin,
 
-	"boss-arm64":        grm.Steps(bossFrontend, grm.Pkg),
-	"heads-cli-arm64":   grm.Pkg,
-	"head-arm64":        grm.Pkg,
-	"time-util-arm64":   grm.Pkg,
-	"solar-arm64":       grm.Pkg,
-	"timesync-arm64":    grm.Pkg,
-	"web-arm64":         grm.Pkg,
-	"lowred-arm64":      NewDocker,
-	"leds-arm64":        NewDocker,
-	"camera-arm64":      NewDocker,
-	"shellystats-arm64": grm.Pkg,
-	"carrier-arm64":     grm.Pkg,
-	"omni-arm64":        grm.Pkg,
+	//"timesync-arm64":    grm.Pkg,
+	//"web-arm64":         grm.Pkg,
+	//"shellystats-arm64": grm.Pkg,
+	//"carrier-arm64":     grm.Pkg,
 
 	"head-armhf":      grm.Pkg,
 	"heads-cli-armhf": grm.Pkg,
