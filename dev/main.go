@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/minor-industries/theheads/boss"
 	util2 "github.com/minor-industries/theheads/boss/util"
+	"github.com/minor-industries/theheads/camera"
 	"github.com/minor-industries/theheads/common/discovery"
 	"github.com/minor-industries/theheads/common/util"
 	"github.com/minor-industries/theheads/head"
@@ -12,7 +13,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"os"
-	"os/exec"
 	"os/signal"
 	"sync"
 	"syscall"
@@ -38,8 +38,15 @@ func main() {
 
 	services := &discovery.StaticDiscovery{}
 
-	runCamera("camera-01", "pi43.raw", services)
-	runCamera("camera-02", "pi42.raw", services)
+	wg.Add(1)
+	camera01Cfg := cameraEnv("camera-01", "dev/pi42.raw")
+	services.Register("camera", "camera-01", camera01Cfg.Port)
+	go camera.Run(camera01Cfg)
+
+	wg.Add(1)
+	camera02Cfg := cameraEnv("camera-02", "dev/pi43.raw")
+	services.Register("camera", "camera-02", camera02Cfg.Port)
+	go camera.Run(camera02Cfg)
 
 	services.Register("head", head01.Instance, head01.Port)
 	services.Register("head", head02.Instance, head02.Port)
@@ -85,28 +92,4 @@ func main() {
 	}()
 
 	wg.Wait()
-}
-
-func runCamera(
-	instance string,
-	src string,
-	services *discovery.StaticDiscovery,
-) {
-	camera01Port := util.RandomPort()
-	services.Register("camera", instance, camera01Port)
-	cmd := exec.Command("go", "run", "./cmd/camera")
-	cmd.Env = append(os.Environ(),
-		"DETECT_FACES=0",
-		"HEIGHT=240",
-		"WIDTH=320",
-		fmt.Sprintf("PORT=%d", camera01Port),
-		"SOURCE=file:dev/"+src,
-		"INSTANCE="+instance,
-	)
-	go func() {
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			panic(string(out))
-		}
-	}()
 }
