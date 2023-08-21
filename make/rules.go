@@ -3,13 +3,18 @@ package main
 import (
 	"fmt"
 	"github.com/minor-industries/grm"
+	"github.com/minor-industries/packager/pkg/build"
 	"github.com/minor-industries/packager/pkg/packager"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func NewDocker(rule string) {
+func Packager(
+	rule string,
+	buildCallback func(request *packager.BuildRequest) error,
+) {
+
 	parts := strings.Split(rule, "-")
 	if len(parts) < 2 {
 		panic("invalid rule")
@@ -23,12 +28,21 @@ func NewDocker(rule string) {
 		New:          false,
 		Arch:         arch,
 		SharedFolder: os.ExpandEnv("$HOME/shared"),
-	}, func(request *packager.BuildRequest) error {
-		grm.DockerWithCustomVersion(request.Version)(rule)
-		return nil
-	}); err != nil {
+	}, buildCallback); err != nil {
 		panic(err)
 	}
+
+}
+
+func NewDocker(rule string) {
+	Packager(rule, func(request *packager.BuildRequest) error {
+		grm.DockerWithCustomVersion(request.Version)(rule)
+		return nil
+	})
+}
+
+func NewPkg(rule string) {
+	Packager(rule, build.BuildSingle)
 }
 
 var arm64 = map[string]func(rule string){
@@ -36,12 +50,12 @@ var arm64 = map[string]func(rule string){
 	"leds-arm64":   NewDocker,
 	"lowred-arm64": NewDocker,
 
-	"boss-arm64":      grm.Steps(bossFrontend, grm.Pkg),
-	"head-arm64":      grm.Pkg,
-	"heads-cli-arm64": grm.Pkg,
-	"omni-arm64":      grm.Pkg,
-	"solar-arm64":     grm.Pkg,
-	"time-util-arm64": grm.Pkg,
+	"boss-arm64":      grm.Steps(bossFrontend, NewPkg),
+	"head-arm64":      NewPkg,
+	"heads-cli-arm64": NewPkg,
+	"omni-arm64":      NewPkg,
+	"solar-arm64":     NewPkg,
+	"time-util-arm64": NewPkg,
 }
 
 func init() {
