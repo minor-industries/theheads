@@ -2,6 +2,9 @@ package boss
 
 import (
 	"embed"
+	"github.com/minor-industries/platform/common/broker"
+	"github.com/minor-industries/platform/common/discovery"
+	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/theheads/boss/app"
 	"github.com/minor-industries/theheads/boss/cfg"
 	"github.com/minor-industries/theheads/boss/day"
@@ -18,9 +21,6 @@ import (
 	"github.com/minor-industries/theheads/boss/server"
 	"github.com/minor-industries/theheads/boss/services"
 	"github.com/minor-industries/theheads/boss/watchdog"
-	"github.com/minor-industries/theheads/common/broker"
-	"github.com/minor-industries/theheads/common/discovery"
-	"github.com/minor-industries/theheads/common/util"
 	"go.uber.org/zap"
 	"io/fs"
 	"os"

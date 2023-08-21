@@ -2,7 +2,7 @@ package leds
 
 import (
 	"fmt"
-	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/platform/common/broker"
 	"github.com/minor-industries/theheads/leds/schema"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"

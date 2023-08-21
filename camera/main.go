@@ -1,10 +1,10 @@
 package camera
 
 import (
+	"github.com/minor-industries/platform/common/broker"
+	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/theheads/camera/cfg"
 	"github.com/minor-industries/theheads/camera/floodlight"
-	"github.com/minor-industries/theheads/common/broker"
-	"github.com/minor-industries/theheads/common/util"
 	"go.uber.org/zap"
 )
 

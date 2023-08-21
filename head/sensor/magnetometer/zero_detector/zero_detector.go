@@ -3,7 +3,7 @@ package zero_detector
 import (
 	"bytes"
 	"fmt"
-	"github.com/minor-industries/theheads/common/metrics"
+	"github.com/minor-industries/platform/common/metrics"
 	"github.com/minor-industries/theheads/head/motor"
 	"github.com/minor-industries/theheads/head/sensor/magnetometer"
 	"github.com/pkg/errors"

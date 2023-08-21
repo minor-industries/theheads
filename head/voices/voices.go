@@ -3,8 +3,8 @@ package voices
 import (
 	"context"
 	"fmt"
+	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/protobuf/gen/go/heads"
-	"github.com/minor-industries/theheads/common/util"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"

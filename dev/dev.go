@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/minor-industries/platform/common/util"
 	cfg2 "github.com/minor-industries/theheads/boss/cfg"
-	"github.com/minor-industries/theheads/common/util"
 	"github.com/minor-industries/theheads/head/cfg"
 	"github.com/minor-industries/theheads/head/motor"
 	"github.com/minor-industries/theheads/head/voices"

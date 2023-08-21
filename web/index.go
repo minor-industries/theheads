@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/platform/common/discovery"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"net/http"

@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/minor-industries/platform/common/discovery"
+	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/theheads/boss"
 	util2 "github.com/minor-industries/theheads/boss/util"
 	"github.com/minor-industries/theheads/camera"
-	"github.com/minor-industries/theheads/common/discovery"
-	"github.com/minor-industries/theheads/common/util"
 	"github.com/minor-industries/theheads/head"
 	"github.com/minor-industries/theheads/web"
 	"github.com/prometheus/client_golang/prometheus"

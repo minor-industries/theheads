@@ -2,7 +2,7 @@ package heads_cli
 
 import (
 	"fmt"
-	"github.com/minor-industries/theheads/common/dotenv"
+	"github.com/minor-industries/platform/common/dotenv"
 	"io/ioutil"
 	"os"
 	"sort"

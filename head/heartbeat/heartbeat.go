@@ -3,8 +3,8 @@ package heartbeat
 import (
 	"context"
 	"github.com/google/uuid"
+	"github.com/minor-industries/platform/common/broker"
 	"github.com/minor-industries/protobuf/gen/go/heads"
-	"github.com/minor-industries/theheads/common/broker"
 	"github.com/minor-industries/theheads/common/schema"
 	"github.com/minor-industries/theheads/head/cfg"
 	"github.com/pkg/errors"

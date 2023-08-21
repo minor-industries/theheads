@@ -2,10 +2,10 @@ package timesync
 
 import (
 	"github.com/coreos/go-systemd/daemon"
+	"github.com/minor-industries/platform/common/discovery"
+	"github.com/minor-industries/platform/common/retry"
+	"github.com/minor-industries/platform/common/standard_server"
 	gen "github.com/minor-industries/protobuf/gen/go/heads"
-	"github.com/minor-industries/theheads/common/discovery"
-	"github.com/minor-industries/theheads/common/retry"
-	"github.com/minor-industries/theheads/common/standard_server"
 	"github.com/minor-industries/theheads/timesync/cfg"
 	"github.com/minor-industries/theheads/timesync/rtc"
 	"github.com/minor-industries/theheads/timesync/rtc/ds3231"

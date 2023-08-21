@@ -1,15 +1,15 @@
 package app
 
 import (
+	"github.com/minor-industries/platform/common/broker"
+	"github.com/minor-industries/platform/common/standard_server"
 	"github.com/minor-industries/theheads/boss/cfg"
 	"github.com/minor-industries/theheads/boss/day"
 	"github.com/minor-industries/theheads/boss/grid"
 	"github.com/minor-industries/theheads/boss/head_manager"
 	"github.com/minor-industries/theheads/boss/scene"
 	"github.com/minor-industries/theheads/boss/services"
-	"github.com/minor-industries/theheads/common/broker"
 	"github.com/minor-industries/theheads/common/schema"
-	"github.com/minor-industries/theheads/common/standard_server"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"io/fs"

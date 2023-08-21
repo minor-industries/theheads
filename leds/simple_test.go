@@ -2,7 +2,7 @@ package leds
 
 import (
 	"fmt"
-	"github.com/minor-industries/theheads/common/util"
+	"github.com/minor-industries/platform/common/util"
 	"testing"
 )
 

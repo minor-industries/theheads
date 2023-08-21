@@ -2,9 +2,9 @@ package heartbeat
 
 import (
 	"context"
+	"github.com/minor-industries/platform/common/broker"
+	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/protobuf/gen/go/heads"
-	"github.com/minor-industries/theheads/common/broker"
-	"github.com/minor-industries/theheads/common/util"
 	"github.com/minor-industries/theheads/head/cfg"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

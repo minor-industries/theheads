@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/minor-industries/theheads/common/discovery"
-	"github.com/minor-industries/theheads/common/util"
+	"github.com/minor-industries/platform/common/discovery"
+	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/theheads/timesync"
 	"github.com/minor-industries/theheads/timesync/cfg"
 	"github.com/vrischmann/envconfig"

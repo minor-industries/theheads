@@ -2,9 +2,9 @@ package main
 
 import (
 	_ "embed"
+	"github.com/minor-industries/platform/common/dotenv"
 	"github.com/minor-industries/theheads/camera"
 	"github.com/minor-industries/theheads/camera/cfg"
-	"github.com/minor-industries/theheads/common/dotenv"
 	"github.com/vrischmann/envconfig"
 )
 

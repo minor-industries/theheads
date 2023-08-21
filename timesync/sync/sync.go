@@ -3,8 +3,8 @@ package sync
 import (
 	"context"
 	"fmt"
+	"github.com/minor-industries/platform/common/discovery"
 	gen "github.com/minor-industries/protobuf/gen/go/heads"
-	"github.com/minor-industries/theheads/common/discovery"
 	"github.com/minor-industries/theheads/timesync/cfg"
 	"github.com/minor-industries/theheads/timesync/util"
 	"github.com/pkg/errors"

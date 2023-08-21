@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/minor-industries/theheads/common/wsrpc/client"
+	"github.com/minor-industries/platform/common/wsrpc/client"
 	"syscall/js"
 	"time"
 )

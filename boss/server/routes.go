@@ -3,8 +3,8 @@ package server
 import (
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+	"github.com/minor-industries/platform/common/standard_server"
 	"github.com/minor-industries/theheads/boss/app"
-	"github.com/minor-industries/theheads/common/standard_server"
 	"go.uber.org/zap"
 	"net/http"
 	"os"

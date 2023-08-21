@@ -1,8 +1,8 @@
 package grid
 
 import (
+	"github.com/minor-industries/platform/common/broker"
 	"github.com/minor-industries/theheads/boss/scene"
-	"github.com/minor-industries/theheads/common/broker"
 	"github.com/minor-industries/theheads/common/geom"
 	"github.com/minor-industries/theheads/common/schema"
 	"go.uber.org/zap"

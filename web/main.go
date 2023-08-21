@@ -2,8 +2,8 @@ package web
 
 import (
 	"embed"
-	"github.com/minor-industries/theheads/common/discovery"
-	"github.com/minor-industries/theheads/common/standard_server"
+	"github.com/minor-industries/platform/common/discovery"
+	"github.com/minor-industries/platform/common/standard_server"
 	serfClient "github.com/minor-industries/theheads/web/serf/client"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"

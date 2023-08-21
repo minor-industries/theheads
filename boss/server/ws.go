@@ -3,9 +3,9 @@ package server
 import (
 	"encoding/json"
 	"github.com/gorilla/websocket"
-	"github.com/minor-industries/theheads/common/broker"
+	"github.com/minor-industries/platform/common/broker"
+	"github.com/minor-industries/platform/common/wsrpc/server"
 	"github.com/minor-industries/theheads/common/schema"
-	"github.com/minor-industries/theheads/common/wsrpc/server"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

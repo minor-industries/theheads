@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/minor-industries/theheads/common/discovery"
+	"github.com/minor-industries/platform/common/discovery"
 	"github.com/minor-industries/theheads/web"
 )
 
