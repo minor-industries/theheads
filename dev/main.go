@@ -4,24 +4,20 @@ import (
 	"fmt"
 	"github.com/cacktopus/theheads/boss"
 	util2 "github.com/cacktopus/theheads/boss/util"
-	"github.com/cacktopus/theheads/camera"
 	"github.com/cacktopus/theheads/common/discovery"
 	"github.com/cacktopus/theheads/common/util"
 	"github.com/cacktopus/theheads/head"
 	"github.com/cacktopus/theheads/web"
 	"github.com/gin-gonic/gin"
-	"github.com/ory/dockertest/v3"
-	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 	"os"
+	"os/exec"
 	"os/signal"
 	"sync"
 	"syscall"
 	"time"
 )
-
-const dockerCamera = false
 
 func main() {
 	logger, _ := util.NewLogger(true)
@@ -42,29 +38,8 @@ func main() {
 
 	services := &discovery.StaticDiscovery{}
 
-	if dockerCamera {
-		pool, err := dockertest.NewPool("")
-		if err != nil {
-			panic(errors.Wrap(err, "could not connect to docker"))
-		}
-
-		wg.Add(1)
-		camera01Port := runDockerCamera(logger, done, &wg, pool, "camera-01", "/d/pi43.raw")
-		services.Register("camera", "camera-01", camera01Port)
-		wg.Add(1)
-		camera02Port := runDockerCamera(logger, done, &wg, pool, "camera-02", "/d/pi42.raw")
-		services.Register("camera", "camera-02", camera02Port)
-	} else {
-		wg.Add(1)
-		camera01Cfg := cameraEnv("camera-01", "dev/pi42.raw")
-		services.Register("camera", "camera-01", camera01Cfg.Port)
-		go camera.Run(camera01Cfg)
-
-		wg.Add(1)
-		camera02Cfg := cameraEnv("camera-02", "dev/pi43.raw")
-		services.Register("camera", "camera-02", camera02Cfg.Port)
-		go camera.Run(camera02Cfg)
-	}
+	runCamera("camera-01", "pi43.raw", services)
+	runCamera("camera-02", "pi42.raw", services)
 
 	services.Register("head", head01.Instance, head01.Port)
 	services.Register("head", head02.Instance, head02.Port)
@@ -110,4 +85,28 @@ func main() {
 	}()
 
 	wg.Wait()
+}
+
+func runCamera(
+	instance string,
+	src string,
+	services *discovery.StaticDiscovery,
+) {
+	camera01Port := util.RandomPort()
+	services.Register("camera", instance, camera01Port)
+	cmd := exec.Command("go", "run", "./cmd/camera")
+	cmd.Env = append(os.Environ(),
+		"DETECT_FACES=0",
+		"HEIGHT=240",
+		"WIDTH=320",
+		fmt.Sprintf("PORT=%d", camera01Port),
+		"SOURCE=file:dev/"+src,
+		"INSTANCE="+instance,
+	)
+	go func() {
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			panic(string(out))
+		}
+	}()
 }
