@@ -118,12 +118,14 @@ var rules = map[string]func(rule string){
 	},
 
 	"docker-arm64-builder": func(string) {
-		grm.Run(nil, "docker", "build",
-			"--platform", "linux/arm64/v8",
-			"--tag", "heads-build-arm64",
-			"-f", "make/arm/Dockerfile.build-arm64",
-			".",
-		)
+		grm.Cd("..", func() {
+			grm.Run(nil, "docker", "build",
+				"--platform", "linux/arm64/v8",
+				"--tag", "heads-build-arm64",
+				"-f", "heads/Dockerfile.camera",
+				".",
+			)
+		})
 	},
 
 	"docker-amd64-builder": func(string) {

@@ -32,11 +32,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libjpeg62-turbo-dev
 
 WORKDIR /build
 
-COPY heads heads
 COPY codelab codelab
 COPY packager packager
 COPY platform platform
 COPY protobuf protobuf
+
+COPY heads/common heads/common
+COPY heads/camera heads/camera
+COPY heads/leds heads/leds
+COPY heads/cmd heads/cmd
+COPY heads/go.mod heads/go.mod
+COPY heads/go.sum heads/go.sum
 
 WORKDIR /build/heads
 
