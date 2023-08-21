@@ -1,6 +1,6 @@
 module github.com/minor-industries/theheads
 
-go 1.19
+go 1.20
 
 replace (
 	github.com/minor-industries/codelab => ../codelab
