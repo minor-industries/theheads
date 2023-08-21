@@ -2,8 +2,7 @@ FROM heads-build-arm64
 
 WORKDIR /build/heads
 
-COPY camera ./camera
-COPY cmd/camera ./cmd/camera
+COPY . .
 
 RUN mkdir -p bin && go build -o bin ./cmd/camera
 
