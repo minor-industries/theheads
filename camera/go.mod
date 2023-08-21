@@ -6,7 +6,7 @@ require (
 	github.com/gin-contrib/pprof v1.4.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gorilla/websocket v1.5.0
-	github.com/minor-industries/grm v0.0.1
+	github.com/minor-industries/grm v0.0.2
 	github.com/minor-industries/packager v0.0.1
 	github.com/minor-industries/platform v0.0.3
 	github.com/minor-industries/protobuf v0.0.1
@@ -60,11 +60,11 @@ require (
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
-	golang.org/x/term v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/term v0.11.0 // indirect
+	golang.org/x/text v0.12.0 // indirect
 	gonum.org/v1/gonum v0.13.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230525234030-28d5490b6b19 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
