@@ -2,7 +2,6 @@ FROM heads-build-arm64
 
 WORKDIR /build/heads
 
-COPY common ./common
 COPY camera ./camera
 COPY cmd/camera ./cmd/camera
 
