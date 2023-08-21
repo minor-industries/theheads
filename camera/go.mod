@@ -1,10 +1,5 @@
 module github.com/minor-industries/theheads/camera
 
-replace (
-	github.com/minor-industries/grm => ../../grm
-	github.com/minor-industries/packager => ../../packager
-)
-
 go 1.20
 
 require (
@@ -12,7 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gorilla/websocket v1.5.0
 	github.com/minor-industries/grm v0.0.1
-	github.com/minor-industries/packager v0.0.0-00010101000000-000000000000
+	github.com/minor-industries/packager v0.0.1
 	github.com/minor-industries/platform v0.0.3
 	github.com/minor-industries/protobuf v0.0.1
 	github.com/montanaflynn/stats v0.7.1
