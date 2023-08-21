@@ -1,9 +1,9 @@
 FROM heads-build-arm64
 
-WORKDIR /build
+WORKDIR /build/heads
 
 COPY cmd/lowred ./cmd/lowred
 RUN mkdir -p bin && go build -o bin ./cmd/lowred
 
 ARG TAG
-RUN tar -czvf "lowred_${TAG}_arm64.tar.gz" bin
+RUN tar -czvf "../lowred_${TAG}_arm64.tar.gz" bin

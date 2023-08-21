@@ -1,6 +1,6 @@
 FROM heads-build-arm64
 
-WORKDIR /build
+WORKDIR /build/heads
 
 COPY common ./common
 COPY leds ./leds
@@ -9,4 +9,4 @@ COPY cmd/leds ./cmd/leds
 RUN go build -o bin/ ./cmd/leds
 
 ARG TAG
-RUN tar -czvf "leds_${TAG}_arm64.tar.gz" bin
+RUN tar -czvf "../leds_${TAG}_arm64.tar.gz" bin
