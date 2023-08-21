@@ -1,9 +1,9 @@
 FROM heads-build-arm64
 
-WORKDIR /build
+WORKDIR /build/heads
 
-COPY common /build/common
-COPY camera /build/camera
+COPY common ./common
+COPY camera ./camera
 COPY cmd/camera ./cmd/camera
 
 RUN mkdir -p bin && go build -o bin ./cmd/camera
