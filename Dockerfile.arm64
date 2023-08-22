@@ -39,14 +39,19 @@ COPY protobuf protobuf
 
 WORKDIR /build/heads
 
-COPY heads/common ./common
 COPY heads/camera ./camera
+RUN (cd camera && go mod download)
+
 COPY heads/leds ./leds
-COPY heads/cmd ./cmd
+COPY heads/cmd/leds ./cmd/leds
+
+COPY heads/cmd/lowred ./cmd/lowred
+
 COPY heads/go.mod ./go.mod
 COPY heads/go.sum ./go.sum
 
 RUN go mod download
+
 RUN go build -o `mktemp -d` ./cmd/leds
 RUN go build -o `mktemp -d` ./cmd/lowred
-RUN go build -o `mktemp -d` ./cmd/camera
+RUN (cd camera && go build -o `mktemp -d` ./cmd/camera)

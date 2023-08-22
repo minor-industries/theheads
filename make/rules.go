@@ -156,7 +156,7 @@ var rules = map[string]func(rule string){
 			grm.Run(nil, "docker", "build",
 				"--platform", "linux/arm64/v8",
 				"--tag", "heads-build-arm64",
-				"-f", "heads/Dockerfile.camera",
+				"-f", "heads/Dockerfile.arm64",
 				".",
 			)
 		})
