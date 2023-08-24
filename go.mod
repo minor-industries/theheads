@@ -7,6 +7,7 @@ replace (
 	github.com/minor-industries/packager => ../packager
 	github.com/minor-industries/platform => ../platform
 	github.com/minor-industries/protobuf => ../protobuf
+	github.com/minor-industries/theheads/camera => ./camera
 )
 
 require (
@@ -24,26 +25,24 @@ require (
 	github.com/larspensjo/Go-simplex-noise v0.0.0-20121005164837-bfdcb9fc4b93
 	github.com/minor-industries/codelab v0.0.0-00010101000000-000000000000
 	github.com/minor-industries/grm v0.0.2
-	github.com/minor-industries/packager v0.0.0-00010101000000-000000000000
-	github.com/minor-industries/platform v0.0.2
-	github.com/minor-industries/protobuf v0.0.0-00010101000000-000000000000
+	github.com/minor-industries/packager v0.0.1
+	github.com/minor-industries/platform v0.0.3
+	github.com/minor-industries/protobuf v0.0.1
+	github.com/minor-industries/theheads/camera v0.0.0-00010101000000-000000000000
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/pelletier/go-toml/v2 v2.0.8
 	github.com/pin/tftp v2.1.0+incompatible
-	github.com/pixiv/go-libjpeg v0.0.0-20190822045933-3da21a74767d
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.16.0
 	github.com/rpi-ws281x/rpi-ws281x-go v1.0.8
 	github.com/ryanuber/go-glob v1.0.0
-	github.com/soheilhy/cmux v0.1.5
 	github.com/stretchr/testify v1.8.4
 	github.com/vrischmann/envconfig v1.3.0
 	go.uber.org/atomic v1.11.0
-	go.uber.org/zap v1.24.0
+	go.uber.org/zap v1.25.0
 	gobot.io/x/gobot v1.16.0
-	gocv.io/x/gocv v0.31.0
 	golang.org/x/crypto v0.12.0
 	gonum.org/v1/gonum v0.13.0
 	gonum.org/v1/plot v0.13.0
@@ -97,6 +96,7 @@ require (
 	github.com/miekg/dns v1.1.41 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/pixiv/go-libjpeg v0.0.0-20190822045933-3da21a74767d // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
@@ -104,9 +104,11 @@ require (
 	github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529 // indirect
 	github.com/sigurn/crc8 v0.0.0-20160107002456-e55481d6f45c // indirect
 	github.com/sigurn/utils v0.0.0-20190728110027-e1fefb11a144 // indirect
+	github.com/soheilhy/cmux v0.1.5 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+	gocv.io/x/gocv v0.31.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/image v0.7.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
