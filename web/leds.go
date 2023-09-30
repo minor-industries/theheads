@@ -3,7 +3,7 @@ package web
 import (
 	"fmt"
 	"go.uber.org/zap"
-	"io/ioutil"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -20,12 +20,12 @@ func platform() (string, error) {
 }
 
 func writefile(logger *zap.Logger, filename, content string) {
-	if err := ioutil.WriteFile(
+	if err := os.WriteFile(
 		filename,
 		[]byte(content+"\n"),
 		0o660,
 	); err != nil {
-		logger.Error("error writing file", zap.String("filename", filename), zap.Error(err))
+		logger.Warn("error writing file", zap.String("filename", filename), zap.Error(err))
 	}
 }
 
@@ -42,7 +42,7 @@ func turnOffLeds(logger *zap.Logger, errCh chan error) {
 
 	switch platform {
 	case "armv7l", "aarch64":
-		for _, name := range []string{"led0", "led1"} {
+		for _, name := range []string{"led0", "led1", "PWR", "ACT"} {
 			writefile(logger, fmt.Sprintf("/sys/class/leds/%s/trigger", name), "none")
 			writefile(logger, fmt.Sprintf("/sys/class/leds/%s/brightness", name), "0")
 		}
