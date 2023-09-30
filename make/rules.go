@@ -31,7 +31,6 @@ func Packager(
 	}, buildCallback); err != nil {
 		panic(err)
 	}
-
 }
 
 func NewDocker(rule string) {

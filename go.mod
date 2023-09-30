@@ -1,6 +1,8 @@
 module github.com/minor-industries/theheads
 
-go 1.20
+go 1.21
+
+toolchain go1.21.1
 
 replace (
 	github.com/minor-industries/codelab => ../codelab
@@ -8,6 +10,7 @@ replace (
 	github.com/minor-industries/platform => ../platform
 	github.com/minor-industries/protobuf => ../protobuf
 	github.com/minor-industries/theheads/camera => ./camera
+	github.com/minor-industries/rfm69 => ./rfm69
 )
 
 require (
