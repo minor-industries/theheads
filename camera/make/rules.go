@@ -40,6 +40,7 @@ func NewDocker(rule string) {
 
 var rules = map[string]func(rule string){
 	"camera-arm64": NewDocker,
+	"camera-armhf": NewDocker,
 }
 
 func main() {
