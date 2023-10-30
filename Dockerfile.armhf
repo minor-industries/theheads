@@ -1,5 +1,8 @@
 # Stage 0 : Build the C library
-FROM debian:buster@sha256:853b9ec779e55f670cbdcb5e15bfb778b5be2c5c61fc8c655638b7a977d273c6 AS lib_builder
+FROM debian:buster@sha256:853b9ec779e55f670cbdcb5e15bfb778b5be2c5c61fc8c655638b7a977d273c6
+
+ENV OPENCV_VER=4.5.5-2
+ENV arch=armhf
 
 WORKDIR /foundry
 
@@ -10,7 +13,14 @@ RUN apt-get update -y && apt-get install -y \
     wget \
     dpkg-dev \
     ffmpeg \
-    libjpeg62-turbo-dev
+    libjpeg62-turbo-dev \
+    libgtk2.0-0 \
+    libgdk-pixbuf2.0-0 \
+    pkg-config
+
+RUN wget https://theheads.sfo2.digitaloceanspaces.com/shared/builds/${arch}/opencv_${OPENCV_VER}_${arch}.deb
+
+RUN dpkg -i /foundry/opencv_${OPENCV_VER}_${arch}.deb
 
 RUN git clone https://github.com/jgarff/rpi_ws281x.git \
   && cd rpi_ws281x \
@@ -19,17 +29,6 @@ RUN git clone https://github.com/jgarff/rpi_ws281x.git \
   && cmake -D BUILD_SHARED=OFF -D BUILD_TEST=OFF .. \
   && cmake --build . \
   && make install
-
-ENV OPENCV_VER="4.5.5-2"
-
-RUN arch=`dpkg-architecture -q DEB_BUILD_ARCH` && \
-    wget https://theheads.sfo2.digitaloceanspaces.com/shared/builds/${arch}/opencv_${OPENCV_VER}_${arch}.deb
-
-
-RUN apt-get install -y libgtk2.0-0
-
-RUN dpkg -i /foundry/opencv_${OPENCV_VER}_armhf.deb
-
 
 RUN wget https://go.dev/dl/go1.21.3.linux-armv6l.tar.gz
 RUN tar -xzvf go1.21.3.linux-armv6l.tar.gz
@@ -59,15 +58,5 @@ RUN go mod download
 
 RUN go build -o `mktemp -d` ./cmd/leds
 RUN go build -o `mktemp -d` ./cmd/lowred
-
-RUN apt-get install -y pkg-config
-
-ENV OPENCV_VER=4.5.5-2
-
-RUN arch=`dpkg-architecture -q DEB_BUILD_ARCH` && \
-    wget https://theheads.sfo2.digitaloceanspaces.com/shared/builds/${arch}/opencv_${OPENCV_VER}_${arch}.deb
-
-RUN dpkg -i /foundry/opencv_${OPENCV_VER}_armhf.deb
-
 
 RUN (cd camera && go build -o `mktemp -d` ./cmd/camera)
