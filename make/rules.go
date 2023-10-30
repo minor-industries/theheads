@@ -133,12 +133,14 @@ var rules = map[string]func(rule string){
 	},
 
 	"docker-armhf-builder": func(string) {
-		grm.Run(nil, "docker", "build",
-			"--platform", "linux/arm/v7",
-			"--tag", "heads-build-armhf",
-			"-f", "make/arm/Dockerfile.build-armhf",
-			".",
-		)
+		grm.Cd("..", func() {
+			grm.Run(nil, "docker", "build",
+				"--platform", "linux/arm/v7",
+				"--tag", "heads-build-armhf",
+				"-f", "heads/Dockerfile.armhf",
+				".",
+			)
+		})
 	},
 
 	"docker-armv6-builder": func(string) {
@@ -161,14 +163,14 @@ var rules = map[string]func(rule string){
 		})
 	},
 
-	"docker-amd64-builder": func(string) {
-		grm.Run(nil, "docker", "build",
-			"--platform", "linux/amd64",
-			"--tag", "heads-build-amd64",
-			"-f", "make/arm/Dockerfile.build-amd64",
-			".",
-		)
-	},
+	//"docker-amd64-builder": func(string) {
+	//	grm.Run(nil, "docker", "build",
+	//		"--platform", "linux/amd64",
+	//		"--tag", "heads-build-amd64",
+	//		"-f", "make/arm/Dockerfile.build-amd64",
+	//		".",
+	//	)
+	//},
 
 	"sign": func(s string) {
 		grm.FindUnexpected()
