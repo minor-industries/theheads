@@ -1,6 +1,5 @@
 # Stage 0 : Build the C library
-# FROM debian@sha256:87eefc7c15610cca61db5c0fd280911c6a737c0680d807432c0bd80cd0cca39b
-FROM debian:bullseye
+FROM debian@sha256:bfe6615d017d1eebe19f349669de58cda36c668ef916e618be78071513c690e5
 
 ENV OPENCV_VER=4.5.5-2
 ENV arch=arm64
@@ -18,6 +17,12 @@ RUN apt-get update -y && apt-get install -y \
     libgtk2.0-0 \
     pkg-config
 
+RUN wget https://theheads.sfo2.digitaloceanspaces.com/shared/builds/${arch}/opencv_${OPENCV_VER}_${arch}.deb
+
+RUN apt-get install -y libgdk-pixbuf2.0-0
+
+RUN dpkg -i /foundry/opencv_${OPENCV_VER}_${arch}.deb
+
 RUN git clone https://github.com/jgarff/rpi_ws281x.git \
   && cd rpi_ws281x \
   && mkdir build \
@@ -26,8 +31,9 @@ RUN git clone https://github.com/jgarff/rpi_ws281x.git \
   && cmake --build . \
   && make install
 
-RUN wget https://theheads.sfo2.digitaloceanspaces.com/shared/builds/${arch}/opencv_${OPENCV_VER}_${arch}.deb
-RUN dpkg -i /foundry/opencv_${OPENCV_VER}_${arch}.deb
+RUN wget https://go.dev/dl/go1.21.3.linux-arm64.tar.gz
+RUN tar -xzvf go1.21.3.linux-arm64.tar.gz
+ENV PATH="$PATH:/foundry/go/bin"
 
 WORKDIR /build
 
@@ -53,8 +59,5 @@ RUN go mod download
 
 RUN go build -o `mktemp -d` ./cmd/leds
 RUN go build -o `mktemp -d` ./cmd/lowred
-
-RUN wget https://theheads.sfo2.digitaloceanspaces.com/shared/builds/${arch}/opencv_${OPENCV_VER}_${arch}.deb
-RUN dpkg -i /foundry/opencv_${OPENCV_VER}_${arch}.deb
 
 RUN (cd camera && go build -o `mktemp -d` ./cmd/camera)
