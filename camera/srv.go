@@ -13,10 +13,12 @@ import (
 	"github.com/minor-industries/platform/common/util"
 	"github.com/minor-industries/protobuf/gen/go/heads"
 	"github.com/minor-industries/theheads/camera/cfg"
+	"github.com/minor-industries/theheads/camera/fe"
 	"github.com/minor-industries/theheads/camera/ffmpeg"
 	"github.com/minor-industries/theheads/camera/floodlight"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"html/template"
 	"io"
 	"net/http"
 	_ "net/http/pprof"
@@ -30,9 +32,6 @@ import (
 
 var upgrader = websocket.Upgrader{}
 
-//go:embed fe/index.html
-var index []byte
-
 //go:embed fe/jsmpeg.min.js
 var jsmpeg []byte
 
@@ -43,6 +42,11 @@ func setupRoutes(
 	router *gin.Engine,
 ) {
 	pprof.Register(router)
+
+	funcs := map[string]any{}
+
+	templ := template.Must(template.New("").Funcs(funcs).ParseFS(fe.FS, "*.html"))
+	router.SetHTMLTemplate(templ)
 
 	router.GET("/ws", gin.WrapF(func(w http.ResponseWriter, r *http.Request) {
 		ws, err := upgrader.Upgrade(w, r, http.Header{"Sec-WebSocket-Protocol": {"null"}})
@@ -65,8 +69,18 @@ func setupRoutes(
 	}))
 
 	staticHTML(router, "/jsmpeg.min.js", jsmpeg)
-	staticHTML(router, "/index.html", index)
-	staticHTML(router, "/", index)
+
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.html", map[string]any{
+			"Title": "this is the title",
+		})
+	})
+
+	router.GET("/index.html", func(c *gin.Context) {
+		c.HTML(200, "index.html", map[string]any{
+			"Title": "this is the title",
+		})
+	})
 
 	router.GET("/restart", func(c *gin.Context) {
 		go func() {
