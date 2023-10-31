@@ -7,4 +7,4 @@ COPY . .
 RUN mkdir -p bin && go build -o bin ./cmd/camera
 
 ARG TAG
-RUN tar -czvf "camera_${TAG}_armhf.tar.gz" bin
+RUN tar -czvf "../camera_${TAG}_armhf.tar.gz" bin
