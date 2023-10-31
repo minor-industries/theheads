@@ -1,10 +1,8 @@
 FROM heads-build-armhf
 
-WORKDIR /build
+WORKDIR /build/heads
 
-COPY common /build/common
-COPY camera /build/camera
-COPY cmd/camera ./cmd/camera
+COPY . .
 
 RUN mkdir -p bin && go build -o bin ./cmd/camera
 
