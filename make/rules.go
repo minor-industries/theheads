@@ -50,6 +50,11 @@ var arm64 = map[string]func(rule string){
 			grm.Run(nil, "go", "run", "./make", "camera-arm64")
 		})
 	},
+	"camera-armhf": func(rule string) {
+		grm.Cd("camera", func() {
+			grm.Run(nil, "go", "run", "./make", "camera-armhf")
+		})
+	},
 	"leds-arm64":   NewDocker,
 	"lowred-arm64": NewDocker,
 
@@ -95,7 +100,6 @@ var rules = map[string]func(rule string){
 	"time-util-armhf": grm.Pkg,
 	"timesync-armhf":  grm.Pkg,
 	"web-armhf":       grm.Pkg,
-	"camera-armhf":    grm.Docker,
 	"leds-armhf":      grm.Docker,
 	"lowred-armhf":    grm.Docker,
 
