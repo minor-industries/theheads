@@ -31,6 +31,7 @@ type Cfg struct {
 	RecorderBufsize    int
 	RecorderMaxSize    int64
 	Source             string
+	Title              string
 	Vflip              bool
 	WarmupFrames       int
 	Width              int

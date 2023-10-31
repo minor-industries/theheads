@@ -70,16 +70,16 @@ func setupRoutes(
 
 	staticHTML(router, "/jsmpeg.min.js", jsmpeg)
 
+	templateArgs := map[string]any{
+		"Title": env.Title,
+	}
+
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", map[string]any{
-			"Title": "this is the title",
-		})
+		c.HTML(200, "index.html", templateArgs)
 	})
 
 	router.GET("/index.html", func(c *gin.Context) {
-		c.HTML(200, "index.html", map[string]any{
-			"Title": "this is the title",
-		})
+		c.HTML(200, "index.html", templateArgs)
 	})
 
 	router.GET("/restart", func(c *gin.Context) {
