@@ -1,4 +1,4 @@
-FROM golang:1.17-buster as build
+FROM golang:1.22-bookworm as build
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -y
 
@@ -16,12 +16,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --autoremove=no \
 
 WORKDIR /build
 
-RUN wget https://github.com/opencv/opencv/archive/4.5.5.zip
-RUN echo 'fb16b734db3a28e5119d513bd7c61ef417edf3756165dc6259519bb9d23d04e2  4.5.5.zip' | shasum -c
-RUN unzip 4.5.5.zip
+RUN wget https://github.com/opencv/opencv/archive/4.8.1.zip
+RUN #echo 'fb16b734db3a28e5119d513bd7c61ef417edf3756165dc6259519bb9d23d04e2  4.8.1.zip' | shasum -c
+RUN unzip 4.8.1.zip
 
-RUN mkdir /build/opencv-4.5.5/build
-WORKDIR /build/opencv-4.5.5/build
+RUN mkdir /build/opencv-4.8.1/build
+WORKDIR /build/opencv-4.8.1/build
 
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -43,9 +43,9 @@ RUN make -j2 # don't go too crazy here, it tends to crash
 RUN rm -rf /usr/local/*
 
 RUN make install
-RUN tar -cf opencv-4.5.5.tar /usr/local
+RUN tar -cf opencv-4.8.1.tar /usr/local
 
-RUN alien --target `dpkg-architecture -q DEB_BUILD_ARCH` --to-deb opencv-4.5.5.tar
+RUN alien --target `dpkg-architecture -q DEB_BUILD_ARCH` --to-deb opencv-4.8.1.tar
 
 RUN mkdir -p /packages
 RUN cp *.deb /packages
