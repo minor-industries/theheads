@@ -1,16 +1,14 @@
 module github.com/minor-industries/theheads
 
-go 1.21
-
-toolchain go1.21.1
+go 1.21.1
 
 replace (
 	github.com/minor-industries/codelab => ../codelab
 	github.com/minor-industries/packager => ../packager
 	github.com/minor-industries/platform => ../platform
 	github.com/minor-industries/protobuf => ../protobuf
-	github.com/minor-industries/theheads/camera => ./camera
 	github.com/minor-industries/rfm69 => ./rfm69
+	github.com/minor-industries/theheads/camera => ./camera
 )
 
 require (
@@ -111,11 +109,11 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	gocv.io/x/gocv v0.31.0 // indirect
+	gocv.io/x/gocv v0.35.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/image v0.7.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230525234030-28d5490b6b19 // indirect
