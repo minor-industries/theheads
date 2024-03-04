@@ -1,7 +1,7 @@
 # Stage 0 : Build the C library
-FROM debian:buster@sha256:853b9ec779e55f670cbdcb5e15bfb778b5be2c5c61fc8c655638b7a977d273c6
+FROM debian:bookworm
 
-ENV OPENCV_VER=4.5.5-2
+ENV OPENCV_VER=4.8.1-2
 ENV arch=armhf
 
 WORKDIR /foundry
@@ -46,17 +46,9 @@ WORKDIR /build/heads
 COPY heads/camera ./camera
 RUN (cd camera && go mod download)
 
-COPY heads/leds ./leds
-COPY heads/cmd/leds ./cmd/leds
-
-COPY heads/cmd/lowred ./cmd/lowred
-
 COPY heads/go.mod ./go.mod
 COPY heads/go.sum ./go.sum
 
 RUN go mod download
-
-RUN go build -o `mktemp -d` ./cmd/leds
-RUN go build -o `mktemp -d` ./cmd/lowred
 
 RUN (cd camera && go build -o `mktemp -d` ./cmd/camera)
